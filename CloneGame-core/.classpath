@@ -1,8 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry path="bin" kind="output"/>
-	<classpathentry path="src" kind="src"/>
-	<classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6/" kind="con"/>
-	<classpathentry path="C:/Users/Test/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.7/8a021ba0bb6555c25dfc272697d379215aa05ed1/gdx-1.9.7.jar" kind="lib" sourcepath="C:/Users/Test/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.7/7d6e0ebd189c4cea7880fea50c45eb724ed3e6ae/gdx-1.9.7-sources.jar"/>
-	<classpathentry path="C:/Users/Test/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.7/ad5b0c9246497c2141580f26ad82f51ecc9879e5/gdx-box2d-1.9.7.jar" kind="lib" sourcepath="C:/Users/Test/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.7/574ff72ba62540ca81e2c50b3bc894f9083a1909/gdx-box2d-1.9.7-sources.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6/"/>
+	<classpathentry kind="lib" path="lib/gdx-1.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-backend-android-1.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-backend-gwt-1.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-backend-lwjgl-1.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-backend-robovm-1.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-box2d-1.9.7.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-box2d-platform-1.9.7-natives-desktop.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-box2d-platform-1.9.7-natives-ios.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-platform-1.9.7-natives-desktop.jar"/>
+	<classpathentry kind="lib" path="lib/gdx-platform-1.9.7-natives-ios.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-codeserver-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-servlet-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib/jinput-2.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/jinput-platform-2.0.5-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lib/jinput-platform-2.0.5-natives-osx.jar"/>
+	<classpathentry kind="lib" path="lib/jinput-platform-2.0.5-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/jlayer-1.0.1-gdx.jar"/>
+	<classpathentry kind="lib" path="lib/jorbis-0.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/jutils-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl_util-2.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-2.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-platform-2.9.2-natives-linux.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-platform-2.9.2-natives-osx.jar"/>
+	<classpathentry kind="lib" path="lib/lwjgl-platform-2.9.2-natives-windows.jar"/>
+	<classpathentry kind="lib" path="lib/robovm-cocoatouch-2.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/robovm-objc-2.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/robovm-rt-2.3.3.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
