@@ -23,6 +23,7 @@ public class CloneGame extends ApplicationAdapter {
 	private Box2DDebugRenderer debugRenderer;
 	
 	private Ragdoll r;
+	private Player player;
 	
 	@Override
 	public void create () {
@@ -30,9 +31,10 @@ public class CloneGame extends ApplicationAdapter {
 		world = new World(new Vector2(0, 0), true);
 		debugRenderer = new Box2DDebugRenderer();
 
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 5; i++){
 			r = new Ragdoll(world, 10 + i*2, 20);
 		}
+		player = new Player(r);
 	}
 
 	private long previousTime = System.nanoTime();
@@ -44,9 +46,11 @@ public class CloneGame extends ApplicationAdapter {
 		float force = 0;
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
 			force = 20;
+			player.jump(force);
 		}
-		if(r.body != null) r.body.applyForceToCenter(+force, 0, true);
-		if(r.head != null) r.head.applyForceToCenter(-force, 0, true);
+		//if(r.body != null) r.body.applyForceToCenter(+force, 0, true);
+		//if(r.head != null) r.head.applyForceToCenter(-force, 0, true);
+		
 		
 		
 		Gdx.gl.glClearColor(1, 0, 0, 1);

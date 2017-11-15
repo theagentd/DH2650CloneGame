@@ -14,50 +14,52 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 public class Ragdoll { 
 	
-	private static int groupIndex = 1;
+	private static int groupCounter = 1;
+	
+	public final short groupIndex;
 
-	public Body head;
-	public Body body;
+	public final Body head;
+	public final Body body;
 	
-	private Body leftArm, rightArm;
-	private Body leftForeArm, rightForeArm;
+	public final Body leftArm, rightArm;
+	public final Body leftForeArm, rightForeArm;
 	
-	private Body leftUpperLeg, rightUpperLeg;
-	private Body leftLowerLeg, rightLowerLeg;
+	public final Body leftUpperLeg, rightUpperLeg;
+	public final Body leftLowerLeg, rightLowerLeg;
 	
-	public RevoluteJoint neckJoint;
+	public final RevoluteJoint neckJoint;
 	
-	public RevoluteJoint leftShoulderJoint, rightShoulderJoint;	
-	public RevoluteJoint leftElbowJoint, rightElbowJoint;
+	public final RevoluteJoint leftShoulderJoint, rightShoulderJoint;	
+	public final RevoluteJoint leftElbowJoint, rightElbowJoint;
 
-	public RevoluteJoint leftHipJoint, rightHipJoint;
-	public RevoluteJoint leftKneeJoint, rightKneeJoint;
+	public final RevoluteJoint leftHipJoint, rightHipJoint;
+	public final RevoluteJoint leftKneeJoint, rightKneeJoint;
 	
 	
 	public Ragdoll(World world, float x, float y) {
 		
-		int baseIndex = groupIndex++;
-		short group = (short)-baseIndex;
+		int baseIndex = groupCounter++;
+		groupIndex = (short)-baseIndex;
 		
 		//A negative group index that isn't 0 means that the objects within that group do not collide.
 		//By setting all bodies in the ragdoll to the same negative non-zero group,
 		//we can prevent they body parts from colliding with each other.
 		
 
-		head = createCircle(world, group, x, y+3.5f, 1.5f);		
-		body = createRectangle(world, group, x, y, 0.7f, 2);
+		head = createCircle(world, x, y+3.5f, 1.5f);		
+		body = createRectangle(world, x, y, 0.7f, 2);
 
-		leftArm = createRectangle(world, group, x, y+0.5f, 0.3f, 1.2f);
-		rightArm = createRectangle(world, group, x, y+0.5f, 0.3f, 1.2f);
+		leftArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f);
+		rightArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f);
 
-		leftForeArm = createRectangle(world, group, x, y-1.5f, 0.3f, 1.2f);
-		rightForeArm = createRectangle(world, group, x, y-1.5f, 0.3f, 1.2f);
+		leftForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f);
+		rightForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f);
 		
-		leftUpperLeg = createRectangle(world, group, x, y-3.2f, 0.3f, 1.2f);
-		rightUpperLeg = createRectangle(world, group, x, y-3.2f, 0.3f, 1.2f);
+		leftUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f);
+		rightUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f);
 		
-		leftLowerLeg = createRectangle(world, group, x, y-5.6f, 0.3f, 1.2f);
-		rightLowerLeg = createRectangle(world, group, x, y-5.6f, 0.3f, 1.2f);
+		leftLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f);
+		rightLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f);
 		
 		
 		
@@ -89,7 +91,7 @@ public class Ragdoll {
 		return world.createBody(bd);
 	}
 
-	private Body createRectangle(World world, short groupIndex, float x, float y, float width, float height) {
+	private Body createRectangle(World world, float x, float y, float width, float height) {
 		
 		Body b = createBody(world, x, y);
 		
@@ -109,7 +111,7 @@ public class Ragdoll {
 		return b;
 	}
 
-	private Body createCircle(World world, short groupIndex, float x, float y, float radius) {
+	private Body createCircle(World world, float x, float y, float radius) {
 
 		Body b = createBody(world, x, y);
 		
