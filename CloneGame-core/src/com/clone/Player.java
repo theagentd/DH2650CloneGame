@@ -9,9 +9,12 @@ public class Player {
 	
 	private Ragdoll ragdoll;
 	
+	private boolean canJump;
+	
 	private Fixture hitbox;
 	
 	public Player(Ragdoll ragdoll) {
+		canJump = true;
 		this.ragdoll = ragdoll;
 		ragdoll.body.setFixedRotation(true);
 		
@@ -27,13 +30,21 @@ public class Player {
 	public void applyForce(float x, float y){
 		ragdoll.body.applyForceToCenter(x, y, true);
 	}
-	public void jump(float velocity){
-		Vector2 oldVelocity = ragdoll.body.getLinearVelocity();
-		ragdoll.body.setLinearVelocity(oldVelocity.x, velocity);
+	
+	public void jump(float velocity) throws InterruptedException{
+		if(canJump) {
+			Vector2 oldVelocity = ragdoll.body.getLinearVelocity();
+			ragdoll.body.setLinearVelocity(oldVelocity.x, velocity);
+			
+		}
 	}
 	
 	public void dispose() {
 		ragdoll.body.destroyFixture(hitbox);
 		ragdoll.body.setFixedRotation(false);
+	}
+	
+	public void setJump(boolean newJump) {
+		this.canJump = newJump;
 	}
 }

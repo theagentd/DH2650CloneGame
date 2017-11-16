@@ -4,17 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class CloneGame extends ApplicationAdapter {
@@ -44,12 +36,19 @@ public class CloneGame extends ApplicationAdapter {
 		
 		
 		float force = 0;
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-			force = 20;
-			player.jump(force);
+		try {
+			move(player);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		//if(r.body != null) r.body.applyForceToCenter(+force, 0, true);
-		//if(r.head != null) r.head.applyForceToCenter(-force, 0, true);
+//		if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+//			force = 20;
+//			player.jump(force);
+//			if(r.body != null) r.body.applyForceToCenter(-force, 0, true);
+//			if(r.head != null) r.head.applyForceToCenter(+force, 0, true);
+//		}
+		
 		
 		
 		
@@ -70,6 +69,21 @@ public class CloneGame extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
+		
+	}
+	
+	private void move(Player player) throws InterruptedException {
+		float force = 20;
+		if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)){
+			player.jump(force);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)){
+			player.applyForce(force, 0);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)){
+			player.applyForce(-force, 0);;
+		}
+		
 		
 	}
 }
