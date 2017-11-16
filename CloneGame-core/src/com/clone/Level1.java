@@ -41,5 +41,7 @@ public class Level1 {
 		
 		//Under the level
 		Utils.GroundSpike(world);
+		
+		new End(world, new Vector2(275, 222));
 	}
 }

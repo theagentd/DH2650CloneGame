@@ -9,9 +9,11 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
 	
 	public Player deadPlayer;
+	public boolean endLevel;
 	
 	public ContactListener() {
 		deadPlayer = null;
+		endLevel = false;
 	}
 
 	@Override
@@ -25,6 +27,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Object objectA = contact.getFixtureA().getUserData();
 		Object objectB = contact.getFixtureB().getUserData();
 		checkPlayerHit(objectA, objectB);
+		checkEnd(objectA, objectB);
 	}
 
 	@Override
@@ -60,7 +63,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	}
 
 	private void checkPlayerHit(final Object objectA, final Object objectB) {
-		if (objectA instanceof Player || objectB instanceof Player) {
+		if (isPlayer(objectA, objectB)) {
 			if (objectA instanceof Obstacle) {
 				if(((Player) objectB).getActive()) {
 					deadPlayer = ((Player) objectB);
@@ -86,7 +89,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	}
 
 	private void checkCanNotJump(Object objectA, Object objectB) {
-		if (objectA instanceof Player || objectB instanceof Player) {
+		if (isPlayer(objectA, objectB)) {
 			if (objectA instanceof GroundSquare) {
 				((Player) objectB).setJump(false);
 			} else if (objectB instanceof GroundSquare) {
@@ -96,13 +99,29 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	}
 
 	private void checkCanJump(Object objectA, Object objectB) {
-		if (objectA instanceof Player || objectB instanceof Player) {
+		if (isPlayer(objectA, objectB)) {
 			if (objectA instanceof GroundSquare) {
 				((Player) objectB).setJump(true);
 			} else if (objectB instanceof GroundSquare) {
 				((Player) objectA).setJump(true);
 			}
 		}
+	}
+	
+	private void checkEnd(Object objectA, Object objectB) {
+		if(isPlayer(objectA, objectB)) {
+			if(isEnd(objectA, objectB)) {
+				endLevel = true;
+			}
+		}
+	}
+
+	private boolean isEnd(Object objectA, Object objectB) {
+		return objectA instanceof End || objectB instanceof End;
+	}
+
+	private boolean isPlayer(Object objectA, Object objectB) {
+		return objectA instanceof Player || objectB instanceof Player;
 	}
 
 }

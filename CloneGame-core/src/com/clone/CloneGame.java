@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 public class CloneGame extends ApplicationAdapter {
 
@@ -77,15 +79,27 @@ public class CloneGame extends ApplicationAdapter {
 			}
 		}
 		
+		if(contactListener.endLevel) {
+			Array<Body> bodies = new Array<Body>();
+			world.getBodies(bodies);
+			for(Body body : bodies) {
+				world.destroyBody(body);
+			}
+			new Level2(world);
+			player = null;
+			contactListener.endLevel = false;
+		}
 		
 		
-		Gdx.graphics.setTitle("Can jump: " + player.isCanJump());
+		
+		//Gdx.graphics.setTitle("Can jump: " + player.isCanJump());
 
 		debugRenderer.render(world, matrix);
 	}
 
 	@Override
 	public void dispose() {
+		
 	}
 
 	private void move(Player player){
