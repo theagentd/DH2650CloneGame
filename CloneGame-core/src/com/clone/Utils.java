@@ -23,4 +23,11 @@ public class Utils {
 		new SpikeL(world, new Vector2(point.x +(90*GroundSquare.scale), point.y));
 		new SpikeL(world, new Vector2(point.x +(120*GroundSquare.scale), point.y));
 	}
+	
+	public static void GroundSpike(World world) {
+		for(int i = 0; i < 20; i++) {
+			SpikeL5(world, new Vector2(20+i*150*GroundSquare.scale, 80));
+
+		}
+	}
 }

@@ -1,5 +1,6 @@
 package com.clone;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -15,13 +16,11 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 			return;
 		if (fixtureA.getUserData() == null || fixtureB.getUserData() == null)
 			return;
-
 		Object objectA = contact.getFixtureA().getUserData();
 		Object objectB = contact.getFixtureB().getUserData();
 		checkPlayerHit(objectA, objectB);
 		checkCanJump(objectA, objectB);
 	}
-
 
 	@Override
 	public void endContact(Contact contact) {
@@ -48,45 +47,62 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	}
 
-	private void checkPlayerHit(Object objectA, Object objectB) {
-		// if(objectA instanceof Player || objectB instanceof Player) {
-		// if(objectA instanceof Obstacle) {
-		// ((Player) objectB).dispose();
-		// } else if(objectB instanceof Obstacle) {
-		// ((Player) objectA).dispose();
-		// }
-		// }
+	private void checkPlayerHit(final Object objectA, final Object objectB) {
+		if (objectA instanceof Player || objectB instanceof Player) {
+			if (objectA instanceof Obstacle) {
+				Gdx.app.postRunnable(new Runnable() {
+					
+					@Override
+					public void run() {
+						if(((Player) objectB).getActive()) {
+							((Player) objectB).dispose();
+						}
+					}
+				});
+			} else if (objectB instanceof Obstacle) {
+				Gdx.app.postRunnable(new Runnable() {
+					
+					@Override
+					public void run() {
+						if(((Player) objectB).getActive()) {
+							((Player) objectA).dispose();
+						}
+					}
+				});
+			}
+		}
 	}
-	
+
 	private void checkBouncingPlayer(Object objectA, Object objectB) {
-//		if (objectA instanceof BouncingPlayer || objectB instanceof BouncingPlayer) {
-//			if (objectA instanceof Player) {
-//				((Player) objectA).jumpHigher(); // A method that makes the player jump a lot higher instead of just
-//													// jumping a little bit
-//			} else if (objectB instanceof Player) {
-//				((Player) objectB).jumpHigher();
-//			}
-//		}
+		// if (objectA instanceof BouncingPlayer || objectB instanceof BouncingPlayer) {
+		// if (objectA instanceof Player) {
+		// ((Player) objectA).jumpHigher(); // A method that makes the player jump a lot
+		// higher instead of just
+		// // jumping a little bit
+		// } else if (objectB instanceof Player) {
+		// ((Player) objectB).jumpHigher();
+		// }
+		// }
 	}
-	
+
 	private void checkCanNotJump(Object objectA, Object objectB) {
-//		if(objectA instanceof Player || objectB instanceof Player) {
-//			if(objectA instanceof GroudSquare) {
-//				((Player) objectB).setJump(false);
-//			} else if(objectB instanceof GroudSquare){
-//				((Player) objectA).setJump(false);
-//			}
-//		}
+		if (objectA instanceof Player || objectB instanceof Player) {
+			if (objectA instanceof GroundSquare) {
+				((Player) objectB).setJump(false);
+			} else if (objectB instanceof GroundSquare) {
+				((Player) objectA).setJump(false);
+			}
+		}
 	}
-	
+
 	private void checkCanJump(Object objectA, Object objectB) {
-//		if(objectA instanceof Player || objectB instanceof Player) {
-//			if(objectA instanceof GroudSquare) {
-//				((Player) objectB).setJump(true);
-//			} else if(objectB instanceof GroudSquare){
-//				((Player) objectA).setJump(true);
-//			}
-//		}
+		if (objectA instanceof Player || objectB instanceof Player) {
+			if (objectA instanceof GroundSquare) {
+				((Player) objectB).setJump(true);
+			} else if (objectB instanceof GroundSquare) {
+				((Player) objectA).setJump(true);
+			}
+		}
 	}
 
 }
