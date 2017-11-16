@@ -17,6 +17,8 @@ public class Ragdoll {
 	private static int groupCounter = 1;
 	
 	public final short groupIndex;
+	
+	public final float restitution;
 
 	public final Body head;
 	public final Body body;
@@ -36,35 +38,40 @@ public class Ragdoll {
 	public final RevoluteJoint leftKneeJoint, rightKneeJoint;
 	
 	
-	public Ragdoll(World world, float x, float y) {
+	public Ragdoll(World world, float x, float y, float restitution) {
 		
 		int baseIndex = groupCounter++;
 		groupIndex = (short)-baseIndex;
 		
+		this.restitution = restitution;
+		
 		//A negative group index that isn't 0 means that the objects within that group do not collide.
 		//By setting all bodies in the ragdoll to the same negative non-zero group,
 		//we can prevent they body parts from colliding with each other.
-		
 
-		head = createCircle(world, x, y+3.5f, 1.5f);		
-		body = createRectangle(world, x, y, 0.7f, 2);
+		
+		body = createRectangle(world, x, y, 0.7f, 2, 1, 0);
 
-		leftArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f);
-		rightArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f);
+		float nonBodyDensity = 0.01f;
+		float nonBodyDamping = 10;
+		head = createCircle(world, x, y+3.5f, 1.5f, nonBodyDensity, nonBodyDamping);		
 
-		leftForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f);
-		rightForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f);
+		leftArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+
+		leftForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
 		
-		leftUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f);
-		rightUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f);
+		leftUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
 		
-		leftLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f);
-		rightLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f);
-		
-		
+		leftLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
 		
 		
-		neckJoint = createRevoluteJoint(world, head, 0, -1.7f, body, 0, +2, 0.75f);
+		
+		
+		neckJoint = createRevoluteJoint(world, head, 0, -1.7f, body, 0, +2, 0.3f);
 
 		leftShoulderJoint = createRevoluteJoint(world, body, 0, +2, leftArm, 0, 1.2f, 0f);
 		rightShoulderJoint = createRevoluteJoint(world, body, 0, +2, rightArm, 0, 1.2f, 0f);
@@ -80,20 +87,21 @@ public class Ragdoll {
 		rightKneeJoint = createRevoluteJoint(world, rightUpperLeg, 0, -1.2f, rightLowerLeg, 0, 1.2f, 2.0f);
 		
 		
-		
 	}
 
-	private Body createBody(World world, float x, float y){
+	private Body createBody(World world, float x, float y, float angularDamping){
 		
 		BodyDef bd = new BodyDef();
 		bd.type = BodyType.DynamicBody;
 		bd.position.set(x, y);
+		bd.linearDamping = 0.1f;
+		bd.angularDamping = angularDamping;
 		return world.createBody(bd);
 	}
 
-	private Body createRectangle(World world, float x, float y, float width, float height) {
+	private Body createRectangle(World world, float x, float y, float width, float height, float density, float angularDamping) {
 		
-		Body b = createBody(world, x, y);
+		Body b = createBody(world, x, y, angularDamping);
 		
 		PolygonShape s = new PolygonShape();
 		s.setAsBox(width, height);
@@ -101,8 +109,9 @@ public class Ragdoll {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = s;
 		fd.friction = 0.75f;
-		fd.density = 1;
-		fd.restitution = 0.1f;
+		fd.density = density;
+		fd.restitution = restitution;
+		fd.friction = 0.0f;
 		
 		fd.filter.groupIndex = groupIndex;
 		
@@ -111,9 +120,9 @@ public class Ragdoll {
 		return b;
 	}
 
-	private Body createCircle(World world, float x, float y, float radius) {
+	private Body createCircle(World world, float x, float y, float radius, float density, float angularDamping) {
 
-		Body b = createBody(world, x, y);
+		Body b = createBody(world, x, y, angularDamping);
 		
 		CircleShape s = new CircleShape();
 		s.setRadius(radius);
@@ -121,8 +130,8 @@ public class Ragdoll {
 		FixtureDef fd = new FixtureDef();
 		fd.shape = s;
 		fd.friction = 0.75f;
-		fd.density = 1;
-		fd.restitution = 0.1f;
+		fd.density = density;
+		fd.restitution = restitution;
 		
 		fd.filter.groupIndex = groupIndex;
 		
@@ -134,6 +143,7 @@ public class Ragdoll {
 	private RevoluteJoint createRevoluteJoint(World world, Body b1, float x1, float y1, Body b2, float x2, float y2, float maxAngle) {
 		
 		RevoluteJointDef def = new RevoluteJointDef();
+		
 		
 		def.bodyA = b1;
 		def.localAnchorA.set(x1, y1);

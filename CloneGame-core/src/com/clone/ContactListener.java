@@ -7,6 +7,12 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
+	
+	public Player deadPlayer;
+	
+	public ContactListener() {
+		deadPlayer = null;
+	}
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -19,12 +25,11 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Object objectA = contact.getFixtureA().getUserData();
 		Object objectB = contact.getFixtureB().getUserData();
 		checkPlayerHit(objectA, objectB);
-		checkCanJump(objectA, objectB);
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-		Fixture fixtureA = contact.getFixtureA();
+		/*Fixture fixtureA = contact.getFixtureA();
 		Fixture fixtureB = contact.getFixtureB();
 		if (fixtureA == null || fixtureB == null)
 			return;
@@ -34,12 +39,19 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Object objectA = contact.getFixtureA().getUserData();
 		Object objectB = contact.getFixtureB().getUserData();
 		checkBouncingPlayer(objectA, objectB);
-		checkCanNotJump(objectA, objectB);
+		checkCanNotJump(objectA, objectB);*/
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-
+		Object objectA = contact.getFixtureA().getUserData();
+		Object objectB = contact.getFixtureB().getUserData();
+		if(objectA instanceof Player) {
+			((Player)objectA).setJump(true);
+		}
+		if(objectB instanceof Player) {
+			((Player)objectB).setJump(true);
+		}
 	}
 
 	@Override
@@ -50,25 +62,13 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	private void checkPlayerHit(final Object objectA, final Object objectB) {
 		if (objectA instanceof Player || objectB instanceof Player) {
 			if (objectA instanceof Obstacle) {
-				Gdx.app.postRunnable(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(((Player) objectB).getActive()) {
-							((Player) objectB).dispose();
-						}
-					}
-				});
+				if(((Player) objectB).getActive()) {
+					deadPlayer = ((Player) objectB);
+				}
 			} else if (objectB instanceof Obstacle) {
-				Gdx.app.postRunnable(new Runnable() {
-					
-					@Override
-					public void run() {
-						if(((Player) objectB).getActive()) {
-							((Player) objectA).dispose();
-						}
-					}
-				});
+				if(((Player) objectB).getActive()) {
+					deadPlayer = ((Player) objectA);
+				}
 			}
 		}
 	}
