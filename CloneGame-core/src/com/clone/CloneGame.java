@@ -58,9 +58,9 @@ public class CloneGame extends ApplicationAdapter {
 		// if(r.body != null) r.body.applyForceToCenter(-force, 0, true);
 		// if(r.head != null) r.head.applyForceToCenter(+force, 0, true);
 		// }
-		float cameraScale = 7.9f;
+		float cameraScale = 15f;
 		Matrix4 matrix = new Matrix4();
-		matrix.setToOrtho2D(45, 190, Gdx.graphics.getWidth()/cameraScale, Gdx.graphics.getHeight()/cameraScale, -1, +1);
+		matrix.setToOrtho2D(45, 120, 16*cameraScale, 9*cameraScale, -1, +1);
 
 		//long time = System.nanoTime();
 		//float delta = (time - previousTime) / 1000000000f;
@@ -70,7 +70,7 @@ public class CloneGame extends ApplicationAdapter {
 		player.setJump(false);
 		int iterations = 1;
 		for(int i = 0; i < iterations; i++) {
-			world.step(delta / iterations, 6, 2);
+			world.step(delta / iterations, 10, 5);
 			if(contactListener.deadPlayer != null){
 				contactListener.deadPlayer.dispose();
 				contactListener.deadPlayer = null;
