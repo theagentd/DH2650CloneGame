@@ -1,18 +1,17 @@
 package com.clone;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class GroudSquare extends LevelsElement{
-	public GroudSquare(World world, Vector2... points) {
+public class GroundSquare extends LevelsElement{
+	final static float scale = 0.5f;
+	public GroundSquare(World world, Vector2... points) {
 		super(world, points);
 		bodyDef.position.set(points[0]);
-		
 		//shape
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(10f, 10f);
+		shape.setAsBox(30f * scale, 30f * scale);
 		
 		//fixture
 		fixtureDef.shape = shape;
@@ -21,9 +20,8 @@ public class GroudSquare extends LevelsElement{
 		fixtureDef.restitution = 0.01f;
 		
 		body = world.createBody(bodyDef);
-		body.createFixture(fixtureDef);
+		body.createFixture(fixtureDef).setUserData(this);
 		
 		shape.dispose();
 	}
-
 }

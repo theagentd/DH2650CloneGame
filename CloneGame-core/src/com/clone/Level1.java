@@ -1,0 +1,42 @@
+package com.clone;
+
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
+
+public class Level1 {
+	public Level1(World world) {
+		Utils.Column3(world, new Vector2(50,200+(GroundSquare.scale*60)));
+		Utils.Column3(world, new Vector2(50,200+4*(GroundSquare.scale*60)));
+		Utils.GroundSquare3(world, new Vector2(50,200));
+		Utils.GroundSquare3(world, new Vector2(50+(GroundSquare.scale*60),200));
+		Utils.GroundSquare3(world, new Vector2(50+4*(GroundSquare.scale*60),200));
+		//jump3
+		Utils.GroundSquare3(world, new Vector2(50+10*(GroundSquare.scale*60),200));
+		Utils.GroundSquare3(world, new Vector2(50+12*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		Utils.GroundSquare3(world, new Vector2(50+15*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		new GroundSquare(world, new Vector2(50+18*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		//jump 5
+		Utils.SpikeL5(world, new Vector2(17+13*(GroundSquare.scale*30),100-15*(GroundSquare.scale)));
+		
+		//double jump
+		Utils.GroundSquare3(world, new Vector2(50+18*(GroundSquare.scale*60),200));
+		Utils.SpikeL5(world, new Vector2(17+21*(GroundSquare.scale*30),100-15*(GroundSquare.scale)));
+		Utils.SpikeL5(world, new Vector2(17+26*(GroundSquare.scale*30),100-15*(GroundSquare.scale)));
+		Utils.GroundSquare3(world, new Vector2(50+20*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		Utils.GroundSquare3(world, new Vector2(50+23*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		Utils.GroundSquare3(world, new Vector2(50+26*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		Utils.GroundSquare3(world, new Vector2(50+29*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+
+		Utils.GroundSquare3(world, new Vector2(50+31*(GroundSquare.scale*60),200));
+		Utils.GroundSquare3(world, new Vector2(50+35*(GroundSquare.scale*60),200 + 2*(GroundSquare.scale*60)));
+		//jump
+		Utils.SpikeL5(world, new Vector2(17+40*(GroundSquare.scale*30),100-15*(GroundSquare.scale)));
+		Utils.GroundSquare3(world, new Vector2(50+40*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		Utils.GroundSquare3(world, new Vector2(50+42*(GroundSquare.scale*60),200-(60*GroundSquare.scale)));
+		
+		Utils.GroundSquare3(world, new Vector2(50+46*(GroundSquare.scale*60),200));
+		Utils.GroundSquare3(world, new Vector2(50+49*(GroundSquare.scale*60),200));
+		Utils.GroundSquare3(world, new Vector2(50+52*(GroundSquare.scale*60),200));
+	}
+}

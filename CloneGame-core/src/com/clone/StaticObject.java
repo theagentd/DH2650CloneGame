@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public abstract class StaticObject {
-	protected boolean killThePlayer;
 	protected BodyDef bodyDef;
 	protected FixtureDef fixtureDef;
 	protected Body body;
@@ -21,9 +20,5 @@ public abstract class StaticObject {
 		bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 		fixtureDef = new FixtureDef();
-	}
-	
-	public boolean getkillThePlayer() {
-		return killThePlayer;
 	}
 }

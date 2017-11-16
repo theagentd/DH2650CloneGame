@@ -2,6 +2,7 @@ package com.clone;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -29,35 +30,18 @@ public class CloneGame extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 		
 		world = new World(new Vector2(0, 0), true);
+		world.setGravity(new Vector2(0,-9.81f));
 		debugRenderer = new Box2DDebugRenderer();
 		
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.DynamicBody;
-		bodyDef.position.set(100, 100);
-		bodyDef.angularVelocity = 1;
-		
-		Body body = world.createBody(bodyDef);
-
-		// Create a circle shape and set its radius to 6
-		CircleShape circle = new CircleShape();
-		circle.setRadius(60f);
-
-		// Create a fixture definition to apply our shape to
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = circle;
-		fixtureDef.density = 0.5f; 
-		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 0.6f; // Make it bounce a little bit
-
-		// Create our fixture and attach it to the body
-		Fixture fixture = body.createFixture(fixtureDef);
+		new Level1(world);
+		//new Level2(world);
 	}
 
 	private long previousTime = System.nanoTime();
 	
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		Matrix4 matrix = new Matrix4();
