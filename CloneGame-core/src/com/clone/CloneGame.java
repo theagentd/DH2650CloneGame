@@ -36,7 +36,7 @@ public class CloneGame extends ApplicationAdapter {
 		kindOfClone = 0;
 
 		currentLevel = new Level1(world);
-		// new Level2(world);
+		//new Level2(world);
 	}
 
 	private long previousTime = System.nanoTime();

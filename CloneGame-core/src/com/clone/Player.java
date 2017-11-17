@@ -14,7 +14,7 @@ public class Player {
 	public boolean isActive;
 	
 	public Fixture rectHitbox;	
-	//private Fixture circleHitbox;
+	public Fixture circleHitbox;
 	
 	public Player(Ragdoll ragdoll) {
 		canJump = false;
@@ -24,7 +24,7 @@ public class Player {
 		
 		
 		PolygonShape rectShape = new PolygonShape();
-		rectShape.setAsBox(2.5f, 6.5f, new Vector2(0, -0.75f), 0);
+		rectShape.setAsBox(2.5f, 5f, new Vector2(0, +0.75f), 0);
 		
 		FixtureDef rectDef = new FixtureDef();
 		rectDef.shape = rectShape;
@@ -34,7 +34,7 @@ public class Player {
 		rectHitbox.setUserData(this);
 		
 		
-		/*CircleShape circleShape = new CircleShape();
+		CircleShape circleShape = new CircleShape();
 		circleShape.setRadius(2.5f);
 		circleShape.setPosition(new Vector2(0, -4.25f));
 		
@@ -43,7 +43,7 @@ public class Player {
 		circleDef.restitution = ragdoll.restitution;
 		circleDef.filter.groupIndex = ragdoll.groupIndex;
 		circleHitbox = ragdoll.body.createFixture(circleDef);
-		circleHitbox.setUserData(this);*/
+		circleHitbox.setUserData(this);
 	}
 
 	public void applyForce2(float x, float y){
@@ -66,7 +66,7 @@ public class Player {
 	public void dispose() {
 		setActive(false);
 		ragdoll.body.destroyFixture(rectHitbox);
-		//ragdoll.body.destroyFixture(circleHitbox);
+		ragdoll.body.destroyFixture(circleHitbox);
 		ragdoll.body.setFixedRotation(false);
 	}
 	

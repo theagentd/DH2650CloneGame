@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class BouncingPlayer extends Player{
 	
-	private Fixture circleHitbox;
+	//private Fixture circleHitbox;
 	private World world;
 	
 	public BouncingPlayer(Ragdoll ragdoll, World world) {
@@ -17,7 +17,7 @@ public class BouncingPlayer extends Player{
 		
 		this.world = world;
 		
-		CircleShape circleShape = new CircleShape();
+		/*CircleShape circleShape = new CircleShape();
 		circleShape.setRadius(2.5f);
 		circleShape.setPosition(new Vector2(0, -4.25f));
 		
@@ -26,7 +26,7 @@ public class BouncingPlayer extends Player{
 		circleDef.restitution = ragdoll.restitution;
 		circleDef.filter.groupIndex = ragdoll.groupIndex;
 		circleHitbox = ragdoll.body.createFixture(circleDef);
-		circleHitbox.setUserData(this);
+		circleHitbox.setUserData(this);*/
 	}
 
 	public void applyForce2(float x, float y){
