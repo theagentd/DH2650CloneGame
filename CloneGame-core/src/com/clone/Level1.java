@@ -44,5 +44,7 @@ public class Level1 {
 		
 		//Under the level
 		Utils.SpikesTheWorld(world);
+		
+		new End(world, new Vector2(275, 182));
 	}
 }

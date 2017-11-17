@@ -46,5 +46,9 @@ public class Level2 {
 		
 		Utils.GroundSquare5(world, new Vector2(50+54*(GroundSquare.scale*60),160+7*(GroundSquare.scale*60)));
 		Utils.SpikesTheWorld(world);
+		
+		new End(world, new Vector2(282f, 211.5f));
+
+
 	}
 }
