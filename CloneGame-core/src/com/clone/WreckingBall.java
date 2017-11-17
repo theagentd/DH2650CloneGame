@@ -13,18 +13,18 @@ public class WreckingBall{
 
 		// Create a circle shape and set its radius to 6
 		CircleShape circle = new CircleShape();
-		circle.setRadius(60f);
+		circle.setRadius(8);
 		
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
-		fixtureDef.density = 0.0000001f; 
+		fixtureDef.density = 0.0f; 
 		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 0.6f; // Make it bounce a little bit
+		fixtureDef.restitution = 1f;
 
 		Body body = world.createBody(bodyDef);
 		body.createFixture(fixtureDef).setUserData(this);
-		body.setLinearVelocity(100, 0);
+		
 		circle.dispose();		   
 	}
 }

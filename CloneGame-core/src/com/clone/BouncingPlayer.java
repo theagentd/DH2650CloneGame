@@ -5,36 +5,19 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
-public class Player {
+public class BouncingPlayer extends Player{
 	
-	public Ragdoll ragdoll;
+	private Fixture circleHitbox;
+	private World world;
 	
-	public boolean canJump;
-	public boolean isActive;
-	
-	public Fixture rectHitbox;	
-	//private Fixture circleHitbox;
-	
-	public Player(Ragdoll ragdoll) {
-		canJump = false;
-		isActive = true;
-		this.ragdoll = ragdoll;
-		ragdoll.body.setFixedRotation(true);
+	public BouncingPlayer(Ragdoll ragdoll, World world) {
+		super(ragdoll);
 		
+		this.world = world;
 		
-		PolygonShape rectShape = new PolygonShape();
-		rectShape.setAsBox(2.5f, 6.5f, new Vector2(0, -0.75f), 0);
-		
-		FixtureDef rectDef = new FixtureDef();
-		rectDef.shape = rectShape;
-		rectDef.restitution = ragdoll.restitution;
-		rectDef.filter.groupIndex = ragdoll.groupIndex;
-		rectHitbox = ragdoll.body.createFixture(rectDef);
-		rectHitbox.setUserData(this);
-		
-		
-		/*CircleShape circleShape = new CircleShape();
+		CircleShape circleShape = new CircleShape();
 		circleShape.setRadius(2.5f);
 		circleShape.setPosition(new Vector2(0, -4.25f));
 		
@@ -43,11 +26,11 @@ public class Player {
 		circleDef.restitution = ragdoll.restitution;
 		circleDef.filter.groupIndex = ragdoll.groupIndex;
 		circleHitbox = ragdoll.body.createFixture(circleDef);
-		circleHitbox.setUserData(this);*/
+		circleHitbox.setUserData(this);
 	}
 
 	public void applyForce2(float x, float y){
-		ragdoll.body.applyLinearImpulse(x, y, 0, 0, true);
+		super.ragdoll.body.applyLinearImpulse(x, y, 0, 0, true);
 	}
 	
 	public void applyForce(float force) {
@@ -62,12 +45,13 @@ public class Player {
 			System.out.println(ragdoll.body.getLinearVelocity());
 		}
 	}
-	
+	@Override
 	public void dispose() {
 		setActive(false);
 		ragdoll.body.destroyFixture(rectHitbox);
-		//ragdoll.body.destroyFixture(circleHitbox);
+		ragdoll.body.destroyFixture(circleHitbox);
 		ragdoll.body.setFixedRotation(false);
+		new BouncingBlock(world, new Vector2(ragdoll.body.getPosition().x, ragdoll.body.getPosition().y -4.5f));
 	}
 	
 	public void setJump(boolean newJump) {
@@ -86,3 +70,4 @@ public class Player {
 		return this.isActive;
 	}
 }
+

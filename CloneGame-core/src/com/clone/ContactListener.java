@@ -61,12 +61,12 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	private void checkPlayerHit(final Object objectA, final Object objectB) {
 		if (objectA instanceof Player || objectB instanceof Player) {
-			if (objectA instanceof Obstacle) {
+			if (objectA instanceof Obstacle || objectA instanceof WreckingBall) {
 				if(((Player) objectB).getActive()) {
 					deadPlayer = ((Player) objectB);
 				}
-			} else if (objectB instanceof Obstacle) {
-				if(((Player) objectB).getActive()) {
+			} else if (objectB instanceof Obstacle || objectB instanceof WreckingBall) {
+				if(((Player) objectA).getActive()) {
 					deadPlayer = ((Player) objectA);
 				}
 			}

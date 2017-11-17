@@ -19,6 +19,8 @@ public class CloneGame extends ApplicationAdapter {
 
 	private Ragdoll r;
 	private Player player;
+	
+	private int kindOfClone;
 
 	@Override
 	public void create() {
@@ -27,9 +29,11 @@ public class CloneGame extends ApplicationAdapter {
 		
 		world.setContactListener(contactListener = new ContactListener());
 		debugRenderer = new Box2DDebugRenderer();
-
+		
+		kindOfClone = 0;
+		
 		new Level1(world);
-		// new Level2(world);
+		//new Level2(world);
 	}
 
 	private long previousTime = System.nanoTime();
@@ -40,8 +44,15 @@ public class CloneGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		if(player == null || !player.getActive()) {
-			r = new Ragdoll(world, 55, 210, (float)Math.random());
-			player = new Player(r);
+			//r = new Ragdoll(world, 55, 210, (float)Math.random());
+			r = new Ragdoll(world, 55, 210, 0.5f);
+			
+			switch(kindOfClone) {
+				case 0:	player = new Player(r);
+					break;
+				case 1:	player = new BouncingPlayer(r, world);
+					break;
+			}			
 		}
 
 		// float force = 0;
@@ -50,6 +61,12 @@ public class CloneGame extends ApplicationAdapter {
 		if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
 			player.dispose();
 			r.body.applyAngularImpulse((float)(Math.random()*2-1) * 50, true);
+		}
+		else if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
+			kindOfClone = 0;
+		}
+		else if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)){
+			kindOfClone = 1;
 		}
 		
 		// if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
@@ -76,8 +93,6 @@ public class CloneGame extends ApplicationAdapter {
 				contactListener.deadPlayer = null;
 			}
 		}
-		
-		
 		
 		Gdx.graphics.setTitle("Can jump: " + player.isCanJump());
 
