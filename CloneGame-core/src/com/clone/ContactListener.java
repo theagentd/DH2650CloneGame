@@ -1,6 +1,7 @@
 package com.clone;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -38,7 +39,6 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 			return;
 		if (fixtureA.getUserData() == null || fixtureB.getUserData() == null)
 			return;
-
 		Object objectA = contact.getFixtureA().getUserData();
 		Object objectB = contact.getFixtureB().getUserData();
 		checkBouncingPlayer(objectA, objectB);
@@ -90,6 +90,19 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		// }
 	}
 
+	private void wreckingBallSwitchDirection(Object objectA, Object objectB) {
+		if (isWreckingBall(objectA, objectB)) {
+			System.out.println("jgo");
+			if (objectA instanceof GroundSquare) {
+				System.out.println("hg");
+				((WreckingBall) objectB).body.setLinearVelocity(new Vector2(0, -((WreckingBall) objectB).body.getPosition().y));
+			} else if (objectB instanceof GroundSquare) {
+				System.out.println("ooi");
+				((WreckingBall) objectA).body.setLinearVelocity(new Vector2(0, -((WreckingBall) objectA).body.getPosition().y));
+			}
+		}
+	}
+	
 	private void checkCanNotJump(Object objectA, Object objectB) {
 		if (isPlayer(objectA, objectB)) {
 			if (objectA instanceof GroundSquare) {
@@ -117,6 +130,16 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 			}
 		}
 	}
+	
+	/*private void checkBreak(Object objectA, Object objectB) {
+		if (isPlayer(objectA, objectB)) {
+			if (objectA instanceof BreackableWallRaw || objectA instanceof BreackableWallColumn) {
+				((Breakable) objectA).destroy();
+			} else if (objectB instanceof BreackableWallRaw || objectB instanceof BreackableWallColumn) {
+				((Breakable) objectA).destroy();
+			}
+		}
+	}*/
 
 	private boolean isEnd(Object objectA, Object objectB) {
 		return objectA instanceof End || objectB instanceof End;
@@ -124,6 +147,10 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	private boolean isPlayer(Object objectA, Object objectB) {
 		return objectA instanceof Player || objectB instanceof Player;
+	}
+	
+	private boolean isWreckingBall(Object objectA, Object objectB) {
+		return objectA instanceof WreckingBall || objectB instanceof WreckingBall;
 	}
 
 }

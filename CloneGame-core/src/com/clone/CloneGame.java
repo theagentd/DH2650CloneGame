@@ -36,7 +36,7 @@ public class CloneGame extends ApplicationAdapter {
 		kindOfClone = 0;
 
 		currentLevel = new Level1(world);
-		//new Level2(world);
+		//new Level3(world);
 	}
 
 	private long previousTime = System.nanoTime();
@@ -48,7 +48,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		if (player == null || !player.getActive()) {
 			// r = new Ragdoll(world, 55, 210, (float)Math.random());
-			r = new Ragdoll(world, 55, 180, 0.5f);
+			r = new Ragdoll(world, 55, 180, 0.1f);
 
 			switch (kindOfClone) {
 			case 0:
@@ -105,7 +105,9 @@ public class CloneGame extends ApplicationAdapter {
 			}
 			if (currentLevel instanceof Level1) {
 				currentLevel = new Level2(world);
-			} else {
+			} else if(currentLevel instanceof Level2) {
+				currentLevel = new Level3(world);
+			}else if(currentLevel instanceof Level3) {
 				currentLevel = new Level1(world);
 			}
 			player = null;
