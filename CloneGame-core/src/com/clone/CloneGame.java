@@ -35,7 +35,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		kindOfClone = 0;
 
-		currentLevel = new Level1(world);
+		currentLevel = new Level3(world);
 		//new Level3(world);
 	}
 

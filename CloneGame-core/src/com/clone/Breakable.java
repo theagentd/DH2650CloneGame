@@ -11,6 +11,6 @@ public abstract class Breakable extends LevelsElement {
 	}
 	
 	public void destroy() {
-		body.destroyFixture(fix);
+		world.destroyBody(body);
 	}
 }

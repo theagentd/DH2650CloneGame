@@ -20,7 +20,7 @@ public class WreckingBall{
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
-		fixtureDef.density = 0.0f; 
+		fixtureDef.density = 0.1f; 
 		fixtureDef.friction = 0.4f;
 		fixtureDef.restitution = 1f;
 
