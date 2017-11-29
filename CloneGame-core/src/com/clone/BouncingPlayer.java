@@ -28,7 +28,7 @@ public class BouncingPlayer extends Player{
 		circleHitbox = ragdoll.body.createFixture(circleDef);
 		circleHitbox.setUserData(this);*/
 	}
-
+/*
 	public void applyForce2(float x, float y){
 		super.ragdoll.body.applyLinearImpulse(x, y, 0, 0, true);
 	}
@@ -45,6 +45,7 @@ public class BouncingPlayer extends Player{
 			System.out.println(ragdoll.body.getLinearVelocity());
 		}
 	}
+	*/
 	@Override
 	public void dispose() {
 		setActive(false);
@@ -53,7 +54,7 @@ public class BouncingPlayer extends Player{
 		ragdoll.body.setFixedRotation(false);
 		new BouncingBlock(world, new Vector2(ragdoll.body.getPosition().x, ragdoll.body.getPosition().y -4.5f));
 	}
-	
+	/*
 	public void setJump(boolean newJump) {
 		this.canJump = newJump;
 	}
@@ -68,6 +69,6 @@ public class BouncingPlayer extends Player{
 	
 	public boolean getActive() {
 		return this.isActive;
-	}
+	}*/
 }
 

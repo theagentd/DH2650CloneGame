@@ -5,14 +5,14 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class BreackableWallColumn extends Breakable {
+public class BreackableWallColumn extends Breackable {
 	Fixture fix;
 	public BreackableWallColumn(World world, Vector2... points) {
 		super(world, points);
 		bodyDef.position.set(points[0]);
 		//shape
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(30f * GroundSquare.scale, 90f * GroundSquare.scale);
+		shape.setAsBox(20f * GroundSquare.scale, 90f * GroundSquare.scale);
 		
 		//fixture
 		fixtureDef.shape = shape;

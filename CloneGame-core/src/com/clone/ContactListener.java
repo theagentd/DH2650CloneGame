@@ -2,19 +2,24 @@ package com.clone;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
 
 	public Player deadPlayer;
+	public boolean splash;
 	public boolean endLevel;
 
 	public ContactListener() {
 		deadPlayer = null;
 		endLevel = false;
+		splash = false;
 	}
 
 	@Override
@@ -29,7 +34,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Object objectB = contact.getFixtureB().getUserData();
 		checkPlayerHit(objectA, objectB);
 		checkEnd(objectA, objectB);
-		wreckingBallSwitchDirection(objectA, objectB);
+		//wreckingBallSwitchDirection(objectA, objectB);
 		checkBreak(objectA, objectB);
 	}
 
@@ -37,11 +42,12 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	public void endContact(Contact contact) {
 		/*
 		 * Fixture fixtureA = contact.getFixtureA(); Fixture fixtureB =
-		 * contact.getFixtureB(); if (fixtureA == null || fixtureB == null) return; if
-		 * (fixtureA.getUserData() == null || fixtureB.getUserData() == null) return;
-		 * Object objectA = contact.getFixtureA().getUserData(); Object objectB =
-		 * contact.getFixtureB().getUserData(); checkBouncingPlayer(objectA, objectB);
-		 * checkCanNotJump(objectA, objectB);
+		 * contact.getFixtureB(); if (fixtureA == null || fixtureB == null)
+		 * return; if (fixtureA.getUserData() == null || fixtureB.getUserData()
+		 * == null) return; Object objectA =
+		 * contact.getFixtureA().getUserData(); Object objectB =
+		 * contact.getFixtureB().getUserData(); checkBouncingPlayer(objectA,
+		 * objectB); checkCanNotJump(objectA, objectB);
 		 */
 	}
 
@@ -61,27 +67,36 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	public void preSolve(Contact contact, Manifold manifold) {
 		Object objectA = contact.getFixtureA().getUserData();
 		Object objectB = contact.getFixtureB().getUserData();
-		wreckingBallSwitchDirection(objectA, objectB);
+		wreckingBall(objectA, objectB);
+		saw(objectA, objectB);
 	}
 
 	private void checkPlayerHit(final Object objectA, final Object objectB) {
 		if (objectA instanceof Player || objectB instanceof Player) {
-			if (objectA instanceof Obstacle || objectA instanceof WreckingBall) {
+			if (objectA instanceof Obstacle || (objectA instanceof WreckingBall && ((WreckingBall)objectA).body.getType() != BodyType.StaticBody) || (objectA instanceof Saw && ((Saw)objectA).body.getType() != BodyType.StaticBody)) {
 				if (((Player) objectB).getActive()) {
 					deadPlayer = ((Player) objectB);
 				}
-			} else if (objectB instanceof Obstacle || objectB instanceof WreckingBall) {
+				if(objectA instanceof Saw && ((Saw) objectA).body.getType() != BodyType.StaticBody) {
+					splash = true;
+				}
+			} else if (objectB instanceof Obstacle || (objectB instanceof WreckingBall && ((WreckingBall)objectB).body.getType() != BodyType.StaticBody) || (objectB instanceof Saw && ((Saw)objectB).body.getType() != BodyType.StaticBody)) {
 				if (((Player) objectA).getActive()) {
 					deadPlayer = ((Player) objectA);
+				}
+				if(objectB instanceof Saw && ((Saw) objectB).body.getType() != BodyType.StaticBody) {
+					splash = true;
 				}
 			}
 		}
 	}
 
 	private void checkBouncingPlayer(Object objectA, Object objectB) {
-		// if (objectA instanceof BouncingPlayer || objectB instanceof BouncingPlayer) {
+		// if (objectA instanceof BouncingPlayer || objectB instanceof
+		// BouncingPlayer) {
 		// if (objectA instanceof Player) {
-		// ((Player) objectA).jumpHigher(); // A method that makes the player jump a lot
+		// ((Player) objectA).jumpHigher(); // A method that makes the player
+		// jump a lot
 		// higher instead of just
 		// // jumping a little bit
 		// } else if (objectB instanceof Player) {
@@ -90,17 +105,86 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		// }
 	}
 
-	private void wreckingBallSwitchDirection(Object objectA, Object objectB) {
-		if (isWreckingBall(objectA, objectB)) {
-			System.out.println("jgo");
-			if (objectA instanceof GroundSquare) {
-				System.out.println("hg");
-				((WreckingBall) objectB).body
-						.setLinearVelocity(new Vector2(0, -((WreckingBall) objectB).body.getLinearVelocity().y));
-			} else if (objectB instanceof GroundSquare) {
-				System.out.println("ooi");
-				((WreckingBall) objectA).body
-						.setLinearVelocity(new Vector2(0, -((WreckingBall) objectA).body.getLinearVelocity().y));
+	private void wreckingBall(final Object objectA, final Object objectB) {
+		if(objectA instanceof WreckingBall) {
+			if(objectB instanceof FreezingPlayer) {
+				Gdx.app.postRunnable(new Runnable() {
+
+					@Override
+					public void run() {
+						((WreckingBall) objectA).body.setType(BodyType.StaticBody);
+					}
+				});	
+			}
+			else if (objectB instanceof Player || objectB instanceof GroundSquare || objectB instanceof SpikeL || objectB instanceof BouncingBlock || objectB instanceof Ragdoll) {
+				if(((WreckingBall) objectA).body.getType() != BodyType.StaticBody) {
+					Gdx.app.postRunnable(new Runnable() {
+						@Override
+						public void run() {
+							Vector2 spawn = ((WreckingBall) objectA).spawn;
+							World world = ((WreckingBall) objectA).world;
+							if(objectB instanceof BouncingBlock) {
+								((BouncingBlock) objectB).destroy();
+							}
+							((WreckingBall) objectA).destroy();
+							new WreckingBall(world, spawn);
+
+						}
+					});
+				}
+			}
+		}
+		else if(objectB instanceof WreckingBall) {
+			if(objectA instanceof FreezingPlayer) {
+				Gdx.app.postRunnable(new Runnable() {
+
+					@Override
+					public void run() {
+						((WreckingBall) objectB).body.setType(BodyType.StaticBody);
+					}
+				});	
+			}
+			else if (objectA instanceof Player || objectA instanceof GroundSquare || objectA instanceof BouncingBlock || objectA instanceof Ragdoll) {
+				if(((WreckingBall) objectB).body.getType() != BodyType.StaticBody) {
+					Gdx.app.postRunnable(new Runnable() {
+
+						@Override
+						public void run() {
+							Vector2 spawn = ((WreckingBall) objectB).spawn;
+							World world = ((WreckingBall) objectB).world;
+							if(objectA instanceof BouncingBlock) {
+								((BouncingBlock) objectA).destroy();
+							}
+							((WreckingBall) objectB).destroy();
+							new WreckingBall(world, spawn);
+						}
+					});
+				}
+			}
+		}
+	}
+	
+	private void saw(final Object objectA, final Object objectB) {
+		if(objectA instanceof Saw) {
+			if(objectB instanceof FreezingPlayer) {
+				Gdx.app.postRunnable(new Runnable() {
+
+					@Override
+					public void run() {
+						((Saw) objectA).body.setType(BodyType.StaticBody);
+					}
+				});	
+			}
+		}
+		else if(objectB instanceof Saw) {
+			if(objectA instanceof FreezingPlayer) {
+				Gdx.app.postRunnable(new Runnable() {
+
+					@Override
+					public void run() {
+						((Saw) objectB).body.setType(BodyType.StaticBody);
+					}
+				});	
 			}
 		}
 	}
@@ -135,26 +219,24 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	private void checkBreak(final Object objectA, final Object objectB) {
 		if (isPlayer(objectA, objectB)) {
-			if (objectA instanceof Breakable) {
+			if (objectA instanceof Breackable) {
 				Gdx.app.postRunnable(new Runnable() {
 
 					@Override
 					public void run() {
-						((Breakable) objectA).destroy();
+						((Breackable) objectA).destroy();
 
 					}
 				});
-				// ((Breakable) objectA).destroy();
-			} else if (objectB instanceof Breakable) {
+			} else if (objectB instanceof Breackable) {
 				Gdx.app.postRunnable(new Runnable() {
 
 					@Override
 					public void run() {
-						((Breakable) objectB).destroy();
+						((Breackable) objectB).destroy();
 
 					}
 				});
-				//((Breakable) objectA).destroy();
 			}
 		}
 	}

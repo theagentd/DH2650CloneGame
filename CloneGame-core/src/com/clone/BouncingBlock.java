@@ -23,4 +23,7 @@ public class BouncingBlock extends LevelsElement{
 		
 		shape.dispose();
 	}
+	public void destroy() {
+		world.destroyBody(body);
+	}
 }

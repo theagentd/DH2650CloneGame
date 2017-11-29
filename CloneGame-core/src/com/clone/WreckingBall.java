@@ -6,11 +6,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class WreckingBall{
 	public Body body;
-	
+	public World world;
+	public Vector2 spawn;
 	public WreckingBall(World world, Vector2...points) {
-		
+		this.world = world;
+		spawn = points[0];
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(points[0]);	
 
 		// Create a circle shape and set its radius to 6
@@ -22,12 +24,15 @@ public class WreckingBall{
 		fixtureDef.shape = circle;
 		fixtureDef.density = 0.1f; 
 		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 1f;
+		fixtureDef.restitution = 0.5f;
 
 		body = world.createBody(bodyDef);
 		body.createFixture(fixtureDef).setUserData(this);
-		body.setLinearVelocity(new Vector2(0,-9.81f*4));
 		
 		circle.dispose();		   
+	}
+	
+	public void destroy() {
+		world.destroyBody(body);
 	}
 }

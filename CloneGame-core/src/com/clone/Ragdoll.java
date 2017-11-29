@@ -190,4 +190,18 @@ public class Ragdoll {
 		
 	}
 	
+	public void splash(World world) {
+		world.destroyJoint(neckJoint);
+
+		world.destroyJoint(leftShoulderJoint);
+		world.destroyJoint(rightShoulderJoint);
+		world.destroyJoint(leftElbowJoint);
+		world.destroyJoint(rightElbowJoint);
+
+		world.destroyJoint(leftHipJoint);
+		world.destroyJoint(rightHipJoint);
+		world.destroyJoint(leftKneeJoint);
+		world.destroyJoint(rightKneeJoint);
+	}
+	
 }

@@ -37,10 +37,7 @@ public class Level2 {
 		new GroundSquare(world, new Vector2(50+40*(GroundSquare.scale*60),160+7*(GroundSquare.scale*60)));
 		
 		new GroundSquare(world, new Vector2(50+48*(GroundSquare.scale*60),160-10*(GroundSquare.scale*60)));
-		/*for(int i = 12; i < 24; i = i + 4) {
-			new GroundSquare(world, new Vector2(50+48*(GroundSquare.scale*60),140+i*(GroundSquare.scale*60)));
-		}*/
-		new GroundSquare(world, new Vector2(50+48*(GroundSquare.scale*60),160+23*(GroundSquare.scale*60)));
+		//new GroundSquare(world, new Vector2(50+48*(GroundSquare.scale*60),160+23*(GroundSquare.scale*60)));
 		new WreckingBall(world, new Vector2(50+48*(GroundSquare.scale*60),160+23*(GroundSquare.scale*60)));
 		
 		Utils.GroundSquare5(world, new Vector2(50+54*(GroundSquare.scale*60),160+7*(GroundSquare.scale*60)));

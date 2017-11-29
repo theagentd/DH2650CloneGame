@@ -36,7 +36,6 @@ public class CloneGame extends ApplicationAdapter {
 		kindOfClone = 0;
 
 		currentLevel = new Level3(world);
-		//new Level3(world);
 	}
 
 	private long previousTime = System.nanoTime();
@@ -57,6 +56,9 @@ public class CloneGame extends ApplicationAdapter {
 			case 1:
 				player = new BouncingPlayer(r, world);
 				break;
+			case 2:
+				player = new FreezingPlayer(r);
+				break;
 			}
 		}
 
@@ -70,6 +72,8 @@ public class CloneGame extends ApplicationAdapter {
 			kindOfClone = 0;
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
 			kindOfClone = 1;
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+			kindOfClone = 2;
 		}
 
 		// if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
@@ -92,8 +96,13 @@ public class CloneGame extends ApplicationAdapter {
 		for (int i = 0; i < iterations; i++) {
 			world.step(delta / iterations, 10, 5);
 			if (contactListener.deadPlayer != null) {
+				Ragdoll rag = contactListener.deadPlayer.ragdoll;
 				contactListener.deadPlayer.dispose();
 				contactListener.deadPlayer = null;
+				if(contactListener.splash == true){
+					rag.splash(world);
+					contactListener.splash = false;
+				}
 			}
 		}
 
@@ -105,9 +114,12 @@ public class CloneGame extends ApplicationAdapter {
 			}
 			if (currentLevel instanceof Level1) {
 				currentLevel = new Level2(world);
-			} else if(currentLevel instanceof Level2) {
+			} else if (currentLevel instanceof Level2) {
 				currentLevel = new Level3(world);
-			}else if(currentLevel instanceof Level3) {
+			} else if (currentLevel instanceof Level3) {
+				currentLevel = new Level4(world);
+			}
+			else if (currentLevel instanceof Level4) {
 				currentLevel = new Level1(world);
 			}
 			player = null;
