@@ -24,6 +24,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.clone.fixture3d.Fixture3D;
 
 public class CloneGame extends ApplicationAdapter {
 	
@@ -31,9 +32,6 @@ public class CloneGame extends ApplicationAdapter {
 	
 	private ModelBatch modelBatch;
 	private Environment environment;
-	
-	private Model cube;
-	private ModelInstance cubeInstance;
 	
 	
 	
@@ -50,23 +48,15 @@ public class CloneGame extends ApplicationAdapter {
 
 	@Override
 	public void create() {
+
 		
-		
-		camera = new PerspectiveCamera(60, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.position.set(0, 0, 10);
-		camera.lookAt(0, 0, 0);
-		camera.near = 1;
-		camera.far = 100;
+		camera = new PerspectiveCamera(100, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		modelBatch = new ModelBatch();
 		
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-		environment.add(new DirectionalLight().set(0.5f, 0.5f, 0.5f, -1, -1, -1));
-		
-		
-		cube = new ModelBuilder().createBox(1, 1, 1, new Material(ColorAttribute.createDiffuse(1, 0, 0, 0)), Usage.Position | Usage.Normal);
-		cubeInstance = new ModelInstance(cube);
+		environment.add(new DirectionalLight().set(0.5f, 0.5f, 0.5f, -1w, -2, -3));
 		
 		world = new World(new Vector2(0, 0), true);
 		world.setGravity(new Vector2(0, -9.81f * 2));
@@ -79,8 +69,6 @@ public class CloneGame extends ApplicationAdapter {
 		currentLevel = new Level3(world);
 		//new Level3(world);
 	}
-
-	private long previousTime = System.nanoTime();
 
 	float rotation = 0;
 	@Override
@@ -169,9 +157,16 @@ public class CloneGame extends ApplicationAdapter {
 		
 		rotation += delta * 100;
 		
-		cubeInstance.transform.set(new Vector3(1, -2, 0), new Quaternion().setEulerAngles(rotation, 0, 0));
+
+		Vector2 playerPos = player.ragdoll.body.getPosition();
+		camera.position.set(playerPos, 20);
+		camera.lookAt(playerPos.x, playerPos.y, 0);
+		camera.near = 1;
+		camera.far = 100;
+		camera.update();
+		
 		modelBatch.begin(camera);
-		modelBatch.render(cubeInstance, environment);
+		Fixture3D.renderAllFixtures(modelBatch, environment);
 		modelBatch.end();
 	}
 

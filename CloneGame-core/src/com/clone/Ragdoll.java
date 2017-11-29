@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.clone.fixture3d.BoxFixture3D;
 
 public class Ragdoll { 
 	
@@ -106,7 +107,7 @@ public class Ragdoll {
 		PolygonShape s = new PolygonShape();
 		s.setAsBox(width, height);
 		
-		FixtureDef fd = new FixtureDef();
+		/*FixtureDef fd = new FixtureDef();
 		fd.shape = s;
 		fd.friction = 0.75f;
 		fd.density = density;
@@ -115,7 +116,9 @@ public class Ragdoll {
 		
 		fd.filter.groupIndex = groupIndex;
 		
-		b.createFixture(fd);
+		b.createFixture(fd);*/
+		
+		new BoxFixture3D(b, width, height, 0.5f, 0, density, 0.75f, restitution, groupIndex);
 		
 		return b;
 	}
