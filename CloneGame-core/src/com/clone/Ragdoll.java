@@ -1,17 +1,17 @@
 package com.clone;
 
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.clone.fixture3d.BoxFixture3D;
+import com.clone.fixture3d.ConeFixture3D;
+import com.clone.fixture3d.Fixture3D;
+import com.clone.fixture3d.SphereFixture3D;
 
 public class Ragdoll { 
 	
@@ -20,15 +20,32 @@ public class Ragdoll {
 	public final short groupIndex;
 	
 	public final float restitution;
+	
+	
 
-	public final Body head;
-	public final Body body;
+	public final Body headBody;
+	public final Body torsoBody;
 	
-	public final Body leftArm, rightArm;
-	public final Body leftForeArm, rightForeArm;
+	public final Body leftArmBody, rightArmBody;
+	public final Body leftForeArmBody, rightForeArmBody;
 	
-	public final Body leftUpperLeg, rightUpperLeg;
-	public final Body leftLowerLeg, rightLowerLeg;
+	public final Body leftUpperLegBody, rightUpperLegBody;
+	public final Body leftLowerLegBody, rightLowerLegBody;
+	
+	
+	public final Fixture3D headFixture;
+	public final Fixture3D torsoFixture;
+	
+	public final Fixture3D leftArmFixture, rightArmFixture;
+	public final Fixture3D leftForeArmFixture, rightForeArmFixture;
+	
+	public final Fixture3D leftUpperLegFixture, rightUpperLegFixture;
+	public final Fixture3D leftLowerLegFixture, rightLowerLegFixture;
+	
+	
+	
+	
+	
 	
 	public final RevoluteJoint neckJoint;
 	
@@ -50,42 +67,69 @@ public class Ragdoll {
 		//By setting all bodies in the ragdoll to the same negative non-zero group,
 		//we can prevent they body parts from colliding with each other.
 
-		
-		body = createRectangle(world, x, y, 0.7f, 2, 1, 0);
 
-		float nonBodyDensity = 0.01f;
-		float nonBodyDamping = 10;
-		head = createCircle(world, x, y+3.5f, 1.5f, nonBodyDensity, nonBodyDamping);		
-
-		leftArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
-		rightArm = createRectangle(world, x, y+0.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
-
-		leftForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
-		rightForeArm = createRectangle(world, x, y-1.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
-		
-		leftUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
-		rightUpperLeg = createRectangle(world, x, y-3.2f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
-		
-		leftLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
-		rightLowerLeg = createRectangle(world, x, y-5.6f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		float friction = 0.75f;
+		float nonTorsoDensity = 0.01f;
+		float nonTorsoDamping = 10;
 		
 		
+		/*torsoBody = createRectangle(world, x, y, 0.7f, 2, 1, 0);
 		
+		headBody = createCircle(world, x, y+3.5f, 1.5f, nonBodyDensity, nonBodyDamping);		
+
+		leftArmBody = createRectangle(world, x, y+0.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightArmBody = createRectangle(world, x, y+0.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+
+		leftForeArmBody = createRectangle(world, x, y-1.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightForeArmBody = createRectangle(world, x, y-1.5f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
 		
-		neckJoint = createRevoluteJoint(world, head, 0, -1.7f, body, 0, +2, 0.3f);
+		leftUpperLegBody = createRectangle(world, x, y-3.2f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightUpperLegBody = createRectangle(world, x, y-3.2f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		
+		leftLowerLegBody = createRectangle(world, x, y-5.6f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);
+		rightLowerLegBody = createRectangle(world, x, y-5.6f, 0.3f, 1.2f, nonBodyDensity, nonBodyDamping);*/
+		
+		torsoBody = createBody(world, x, y, 0);
+		torsoFixture = new BoxFixture3D(torsoBody, 0.7f, 2, 1.1f, 0, 1, friction, restitution, groupIndex, this);
+		
+		headBody = createBody(world, x, y+3.5f, nonTorsoDamping);
+		headFixture = new SphereFixture3D(headBody, 1.5f, 0, nonTorsoDensity, friction, restitution, groupIndex, this);
 
-		leftShoulderJoint = createRevoluteJoint(world, body, 0, +2, leftArm, 0, 1.2f, 0f);
-		rightShoulderJoint = createRevoluteJoint(world, body, 0, +2, rightArm, 0, 1.2f, 0f);
+		leftArmBody = createBody(world, x, y+0.5f, nonTorsoDamping);
+		rightArmBody = createBody(world, x, y+0.5f, nonTorsoDamping);
+		leftArmFixture = new BoxFixture3D(leftArmBody, 0.3f, 1.2f, 0.3f, -1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
+		rightArmFixture = new BoxFixture3D(rightArmBody, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
 
-		leftElbowJoint = createRevoluteJoint(world, leftArm, 0, -1.2f, leftForeArm, 0, 1.2f, 2.4f);
-		rightElbowJoint = createRevoluteJoint(world, rightArm, 0, -1.2f, rightForeArm, 0, 1.2f, 2.4f);
+		leftForeArmBody = createBody(world, x, y-1.5f, nonTorsoDamping);
+		rightForeArmBody = createBody(world, x, y-1.5f, nonTorsoDamping);
+		leftForeArmFixture = new BoxFixture3D(leftForeArmBody, 0.3f, 1.2f, 0.3f, -1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
+		rightForeArmFixture = new BoxFixture3D(rightForeArmBody, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
+		
+		leftUpperLegBody = createBody(world, x, y-3.2f, nonTorsoDamping);
+		rightUpperLegBody = createBody(world, x, y-3.2f, nonTorsoDamping);
+		leftUpperLegFixture = new BoxFixture3D(leftUpperLegBody,  0.3f, 1.2f, 0.3f, -1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
+		rightUpperLegFixture = new BoxFixture3D(rightUpperLegBody, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
+		
+		leftLowerLegBody = createBody(world, x, y-5.6f, nonTorsoDamping);
+		rightLowerLegBody = createBody(world, x, y-5.6f, nonTorsoDamping);
+		leftLowerLegFixture = new BoxFixture3D(leftLowerLegBody, 0.3f, 1.2f, 0.3f, -1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
+		rightLowerLegFixture = new BoxFixture3D(rightLowerLegBody, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
+
+		
+		neckJoint = createRevoluteJoint(world, headBody, 0, -1.7f, torsoBody, 0, +2, 0.3f);
+
+		leftShoulderJoint = createRevoluteJoint(world, torsoBody, 0, +2, leftArmBody, 0, 1.2f, 0f);
+		rightShoulderJoint = createRevoluteJoint(world, torsoBody, 0, +2, rightArmBody, 0, 1.2f, 0f);
+
+		leftElbowJoint = createRevoluteJoint(world, leftArmBody, 0, -1.2f, leftForeArmBody, 0, 1.2f, 2.4f);
+		rightElbowJoint = createRevoluteJoint(world, rightArmBody, 0, -1.2f, rightForeArmBody, 0, 1.2f, 2.4f);
 
 
-		leftHipJoint = createRevoluteJoint(world, body, 0, -2f, leftUpperLeg, 0, 1.2f, 2.0f);
-		rightHipJoint = createRevoluteJoint(world, body, 0, -2f, rightUpperLeg, 0, 1.2f, 2.0f);
+		leftHipJoint = createRevoluteJoint(world, torsoBody, 0, -2f, leftUpperLegBody, 0, 1.2f, 2.0f);
+		rightHipJoint = createRevoluteJoint(world, torsoBody, 0, -2f, rightUpperLegBody, 0, 1.2f, 2.0f);
 
-		leftKneeJoint = createRevoluteJoint(world, leftUpperLeg, 0, -1.2f, leftLowerLeg, 0, 1.2f, 2.0f);
-		rightKneeJoint = createRevoluteJoint(world, rightUpperLeg, 0, -1.2f, rightLowerLeg, 0, 1.2f, 2.0f);
+		leftKneeJoint = createRevoluteJoint(world, leftUpperLegBody, 0, -1.2f, leftLowerLegBody, 0, 1.2f, 2.0f);
+		rightKneeJoint = createRevoluteJoint(world, rightUpperLegBody, 0, -1.2f, rightLowerLegBody, 0, 1.2f, 2.0f);
 		
 		
 	}
@@ -97,28 +141,16 @@ public class Ragdoll {
 		bd.position.set(x, y);
 		bd.linearDamping = 0.1f;
 		bd.angularDamping = angularDamping;
-		return world.createBody(bd);
+		Body body = world.createBody(bd);
+		body.setUserData(this);
+		return body;
 	}
 
 	private Body createRectangle(World world, float x, float y, float width, float height, float density, float angularDamping) {
 		
 		Body b = createBody(world, x, y, angularDamping);
 		
-		PolygonShape s = new PolygonShape();
-		s.setAsBox(width, height);
-		
-		/*FixtureDef fd = new FixtureDef();
-		fd.shape = s;
-		fd.friction = 0.75f;
-		fd.density = density;
-		fd.restitution = restitution;
-		fd.friction = 0.0f;
-		
-		fd.filter.groupIndex = groupIndex;
-		
-		b.createFixture(fd);*/
-		
-		new BoxFixture3D(b, width, height, 0.5f, 0, density, 0.75f, restitution, groupIndex);
+		new BoxFixture3D(b, width, height, 0.5f, 0, density, 0.75f, restitution, groupIndex, this);
 		
 		return b;
 	}
@@ -127,18 +159,9 @@ public class Ragdoll {
 
 		Body b = createBody(world, x, y, angularDamping);
 		
-		CircleShape s = new CircleShape();
-		s.setRadius(radius);
 		
-		FixtureDef fd = new FixtureDef();
-		fd.shape = s;
-		fd.friction = 0.75f;
-		fd.density = density;
-		fd.restitution = restitution;
-		
-		fd.filter.groupIndex = groupIndex;
-		
-		b.createFixture(fd);
+		//new SphereFixture3D(b, radius, 0, density, 0.75f, restitution, groupIndex, this);
+		new ConeFixture3D(b, radius, radius, radius, 0, density, 0.75f, restitution, groupIndex, this);
 		
 		return b;
 	}
@@ -178,17 +201,35 @@ public class Ragdoll {
 		world.destroyJoint(leftKneeJoint);
 		world.destroyJoint(rightKneeJoint);
 		
-		world.destroyBody(head);
+		
+		headFixture.dispose();
+		torsoFixture.dispose();
 
-		world.destroyBody(leftArm);
-		world.destroyBody(rightArm);
-		world.destroyBody(leftForeArm);
-		world.destroyBody(rightForeArm);
+		leftArmFixture.dispose();
+		rightArmFixture.dispose();
+		leftForeArmFixture.dispose();
+		rightForeArmFixture.dispose();
+		
+		leftUpperLegFixture.dispose();
+		rightUpperLegFixture.dispose();
+		leftLowerLegFixture.dispose();
+		rightLowerLegFixture.dispose();
+		
+		
+		
 
-		world.destroyBody(leftUpperLeg);
-		world.destroyBody(rightUpperLeg);
-		world.destroyBody(leftLowerLeg);
-		world.destroyBody(rightLowerLeg);
+		world.destroyBody(headBody);
+		world.destroyBody(torsoBody);
+
+		world.destroyBody(leftArmBody);
+		world.destroyBody(rightArmBody);
+		world.destroyBody(leftForeArmBody);
+		world.destroyBody(rightForeArmBody);
+
+		world.destroyBody(leftUpperLegBody);
+		world.destroyBody(rightUpperLegBody);
+		world.destroyBody(leftLowerLegBody);
+		world.destroyBody(rightLowerLegBody);
 		
 		
 	}

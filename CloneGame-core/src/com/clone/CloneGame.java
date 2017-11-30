@@ -50,13 +50,13 @@ public class CloneGame extends ApplicationAdapter {
 	public void create() {
 
 		
-		camera = new PerspectiveCamera(100, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera = new PerspectiveCamera(60, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		modelBatch = new ModelBatch();
 		
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-		environment.add(new DirectionalLight().set(0.5f, 0.5f, 0.5f, -1w, -2, -3));
+		environment.add(new DirectionalLight().set(0.5f, 0.5f, 0.5f, -1, -2, -3));
 		
 		world = new World(new Vector2(0, 0), true);
 		world.setGravity(new Vector2(0, -9.81f * 2));
@@ -102,7 +102,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			player.dispose();
-			r.body.applyAngularImpulse((float) (Math.random() * 2 - 1) * 50, true);
+			r.torsoBody.applyAngularImpulse((float) (Math.random() * 2 - 1) * 50, true);
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 			kindOfClone = 0;
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
@@ -158,8 +158,8 @@ public class CloneGame extends ApplicationAdapter {
 		rotation += delta * 100;
 		
 
-		Vector2 playerPos = player.ragdoll.body.getPosition();
-		camera.position.set(playerPos, 20);
+		Vector2 playerPos = player.ragdoll.torsoBody.getPosition();
+		camera.position.set(playerPos.x + 0, playerPos.y, 50);
 		camera.lookAt(playerPos.x, playerPos.y, 0);
 		camera.near = 1;
 		camera.far = 100;
@@ -190,7 +190,7 @@ public class CloneGame extends ApplicationAdapter {
 			}
 		}
 
-		Vector2 v = r.body.getLinearVelocity();
+		Vector2 v = r.torsoBody.getLinearVelocity();
 		float maxSpeed = 20;
 		if (v.x < -maxSpeed) {
 			v.x = -maxSpeed;
@@ -202,7 +202,7 @@ public class CloneGame extends ApplicationAdapter {
 		if (moving != 0 || (moving < 0 && v.x > 0) || (moving > 0 && v.x < 0)) {
 			v.x *= 0.9f;
 		}
-		r.body.setLinearVelocity(v);
+		r.torsoBody.setLinearVelocity(v);
 
 	}
 }

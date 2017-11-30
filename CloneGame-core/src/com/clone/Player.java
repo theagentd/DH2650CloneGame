@@ -20,7 +20,7 @@ public class Player {
 		canJump = false;
 		isActive = true;
 		this.ragdoll = ragdoll;
-		ragdoll.body.setFixedRotation(true);
+		ragdoll.torsoBody.setFixedRotation(true);
 		
 		
 		PolygonShape rectShape = new PolygonShape();
@@ -30,7 +30,7 @@ public class Player {
 		rectDef.shape = rectShape;
 		rectDef.restitution = ragdoll.restitution;
 		rectDef.filter.groupIndex = ragdoll.groupIndex;
-		rectHitbox = ragdoll.body.createFixture(rectDef);
+		rectHitbox = ragdoll.torsoBody.createFixture(rectDef);
 		rectHitbox.setUserData(this);
 		
 		
@@ -42,32 +42,32 @@ public class Player {
 		circleDef.shape = circleShape;
 		circleDef.restitution = ragdoll.restitution;
 		circleDef.filter.groupIndex = ragdoll.groupIndex;
-		circleHitbox = ragdoll.body.createFixture(circleDef);
+		circleHitbox = ragdoll.torsoBody.createFixture(circleDef);
 		circleHitbox.setUserData(this);
 	}
 
 	public void applyForce2(float x, float y){
-		ragdoll.body.applyLinearImpulse(x, y, 0, 0, true);
+		ragdoll.torsoBody.applyLinearImpulse(x, y, 0, 0, true);
 	}
 	
 	public void applyForce(float force) {
-		Vector2 oldVelocity = ragdoll.body.getLinearVelocity();
-		ragdoll.body.setLinearVelocity(force, oldVelocity.y);
+		Vector2 oldVelocity = ragdoll.torsoBody.getLinearVelocity();
+		ragdoll.torsoBody.setLinearVelocity(force, oldVelocity.y);
 	}
 	
 	public void jump(float velocity){
 		if(canJump) {
-			Vector2 oldVelocity = ragdoll.body.getLinearVelocity();
-			ragdoll.body.setLinearVelocity(oldVelocity.x, velocity);
-			System.out.println(ragdoll.body.getLinearVelocity());
+			Vector2 oldVelocity = ragdoll.torsoBody.getLinearVelocity();
+			ragdoll.torsoBody.setLinearVelocity(oldVelocity.x, velocity);
+			System.out.println(ragdoll.torsoBody.getLinearVelocity());
 		}
 	}
 	
 	public void dispose() {
 		setActive(false);
-		ragdoll.body.destroyFixture(rectHitbox);
-		ragdoll.body.destroyFixture(circleHitbox);
-		ragdoll.body.setFixedRotation(false);
+		ragdoll.torsoBody.destroyFixture(rectHitbox);
+		ragdoll.torsoBody.destroyFixture(circleHitbox);
+		ragdoll.torsoBody.setFixedRotation(false);
 	}
 	
 	public void setJump(boolean newJump) {

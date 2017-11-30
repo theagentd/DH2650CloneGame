@@ -25,6 +25,8 @@ public class GroundSquare extends LevelsElement{
 		
 		shape.dispose();*/
 		
-		new BoxFixture3D(body, 30f * scale, 30f * scale, 20 * scale, 0, 2.5f, 0.1f, 0.01f, (short)0);
+		//TODO: This needs fixing so that the 3D fixture is properly disposed!
+		
+		new BoxFixture3D(body, 30f * scale, 30f * scale, 20 * scale, 0, 2.5f, 0.1f, 0.01f, (short)0, this);
 	}
 }
