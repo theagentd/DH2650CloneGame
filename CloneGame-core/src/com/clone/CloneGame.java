@@ -154,8 +154,6 @@ public class CloneGame extends ApplicationAdapter {
 
 		debugRenderer.render(world, matrix);
 		
-		rotation += delta * 100;
-		
 		if(player.isActive) {
 			Vector2 playerPos = player.ragdoll.torsoBody.getPosition();
 			camera.position.set(playerPos.x + 0, playerPos.y, 50);
