@@ -28,6 +28,7 @@ import com.clone.fixture3d.Fixture3D;
 
 public class CloneGame extends ApplicationAdapter {
 	
+	private float cameraX, cameraY;
 	private PerspectiveCamera camera;
 	
 	private ModelBatch modelBatch;
@@ -49,8 +50,16 @@ public class CloneGame extends ApplicationAdapter {
 	@Override
 	public void create() {
 
+
+		cameraX = 45+240/2;
+		cameraY = 120 + 135/2;
 		
 		camera = new PerspectiveCamera(60, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.near = 10;
+		camera.far = 1000;
+		camera.position.set(cameraX, cameraY, 117);
+		camera.lookAt(cameraX, cameraY, 0);
+		
 		
 		modelBatch = new ModelBatch();
 		
@@ -72,6 +81,7 @@ public class CloneGame extends ApplicationAdapter {
 
 	@Override
 	public void render() {
+		
 		
 		camera.viewportWidth = Gdx.graphics.getWidth();
 		camera.viewportHeight = Gdx.graphics.getHeight();
@@ -114,9 +124,11 @@ public class CloneGame extends ApplicationAdapter {
 		// if(r.body != null) r.body.applyForceToCenter(-force, 0, true);
 		// if(r.head != null) r.head.applyForceToCenter(+force, 0, true);
 		// }
-		float cameraScale = 15f * 3;
 		Matrix4 matrix = new Matrix4();
-		matrix.setToOrtho2D(-45, -120, 16 * cameraScale, 9 * cameraScale, -1, +1);
+		float aspect = (float)camera.viewportWidth / camera.viewportHeight;
+		float w = aspect*135;
+		float h = 135;
+		matrix.setToOrtho2D(cameraX-w/2, cameraY - h/2, aspect*135, 135, -1, +1);
 
 		// long time = System.nanoTime();
 		// float delta = (time - previousTime) / 1000000000f;
@@ -151,21 +163,21 @@ public class CloneGame extends ApplicationAdapter {
 		}
 
 		// Gdx.graphics.setTitle("Can jump: " + player.isCanJump());
-
-		debugRenderer.render(world, matrix);
 		
 		if(player.isActive) {
-			Vector2 playerPos = player.ragdoll.torsoBody.getPosition();
+			/*Vector2 playerPos = player.ragdoll.torsoBody.getPosition();
 			camera.position.set(playerPos.x + 0, playerPos.y, 50);
 			camera.lookAt(playerPos.x, playerPos.y, 0);
 			camera.near = 1;
 			camera.far = 100;
-			camera.update();
+			camera.update();*/
 			
 			modelBatch.begin(camera);
 			Fixture3D.renderAllFixtures(modelBatch, environment);
 			modelBatch.end();
 		}
+
+		debugRenderer.render(world, matrix);
 	}
 
 	@Override
