@@ -115,9 +115,9 @@ public class CloneGame extends ApplicationAdapter {
 		// if(r.body != null) r.body.applyForceToCenter(-force, 0, true);
 		// if(r.head != null) r.head.applyForceToCenter(+force, 0, true);
 		// }
-		float cameraScale = 15f;
+		float cameraScale = 15f * 3;
 		Matrix4 matrix = new Matrix4();
-		matrix.setToOrtho2D(45, 120, 16 * cameraScale, 9 * cameraScale, -1, +1);
+		matrix.setToOrtho2D(-45, -120, 16 * cameraScale, 9 * cameraScale, -1, +1);
 
 		// long time = System.nanoTime();
 		// float delta = (time - previousTime) / 1000000000f;

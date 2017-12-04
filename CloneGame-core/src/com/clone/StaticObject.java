@@ -20,5 +20,13 @@ public abstract class StaticObject {
 		bodyDef = new BodyDef();
 		bodyDef.type = BodyType.StaticBody;
 		fixtureDef = new FixtureDef();
+		
+		/* TODO
+		 * does this fixtureDef need to be changed into a Fixture3D?
+		 * Because since Ficture3D is an abstract class, I can't create an object with it.
+		 * Then what type of Fixture is appropriate here? Box, Cone or Sphere?
+		 * And their constructors have arguments, that I can't fill here?
+		 * 
+		 */
 	}
 }

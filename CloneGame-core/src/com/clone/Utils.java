@@ -8,7 +8,7 @@ public class Utils {
 		new GroundSquare(world, point);
 		new GroundSquare(world, new Vector2(point.x+(60*GroundSquare.scale), point.y));
 		new GroundSquare(world, new Vector2(point.x+(120*GroundSquare.scale), point.y));
-		}
+	}
 	
 	public static void GroundSquare5(World world, Vector2 point) {
 		new GroundSquare(world, point);
@@ -16,13 +16,13 @@ public class Utils {
 		new GroundSquare(world, new Vector2(point.x+(120*GroundSquare.scale), point.y));
 		new GroundSquare(world, new Vector2(point.x+(180*GroundSquare.scale), point.y));
 		new GroundSquare(world, new Vector2(point.x+(240*GroundSquare.scale), point.y));
-		}
+	}
 	
 	public static void Column3(World world, Vector2 point) {
 		new GroundSquare(world, point);
 		new GroundSquare(world, new Vector2(point.x, point.y+(60*GroundSquare.scale)));
 		new GroundSquare(world, new Vector2(point.x, point.y+(120*GroundSquare.scale)));
-		}
+	}
 	
 	public static void SpikeL5(World world, Vector2 point) {
 		new SpikeL(world, point);
