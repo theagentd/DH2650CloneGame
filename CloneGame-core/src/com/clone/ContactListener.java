@@ -140,7 +140,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 					@Override
 					public void run() {
-						((Breakable) objectA).destroy();
+						((Breakable) objectA).dispose();
 
 					}
 				});
@@ -150,7 +150,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 					@Override
 					public void run() {
-						((Breakable) objectB).destroy();
+						((Breakable) objectB).dispose();
 
 					}
 				});

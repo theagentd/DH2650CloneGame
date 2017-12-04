@@ -5,12 +5,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class Breakable extends LevelsElement {
-	Fixture fix;
-	public Breakable(World world, Vector2...points) {
-		super(world, points);
-	}
-	
-	public void destroy() {
-		world.destroyBody(body);
+	public Breakable(World world, Vector2 position) {
+		super(world, position);
 	}
 }

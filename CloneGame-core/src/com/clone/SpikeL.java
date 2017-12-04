@@ -1,14 +1,14 @@
 package com.clone;
 
+import static com.clone.LevelsElement.*;
+
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.clone.fixture3d.ConeFixture3D;
 
 public class SpikeL extends Obstacle{
-	public SpikeL(World world, Vector2... points) {
-		super(world, points);
-		bodyDef.position.set(points[0]).scl(2);
+	public SpikeL(World world, Vector2 position) {
+		super(world, new Vector2(position).scl(2).add(30f*SCALE, 30f*SCALE));
 		/*//Shape
 		Vector2[] vertices = new Vector2[3];
 		vertices[0] = new Vector2(points[0].x + 30*GroundSquare.scale, points[0].y + 60 * GroundSquare.scale);
@@ -23,7 +23,7 @@ public class SpikeL extends Obstacle{
 		fixtureDef.friction = 0.5f;
 		fixtureDef.restitution = 0.01f;*/
 		
-		body = world.createBody(bodyDef);
+		//body = world.createBody(bodyDef);
 		//body.createFixture(fixtureDef).setUserData(this);
 				
 		//shape.dispose();
@@ -35,7 +35,7 @@ public class SpikeL extends Obstacle{
 		 * 
 		 */
 		
-		new ConeFixture3D(body, 20f*GroundSquare.scale, 30f*GroundSquare.scale, 20*GroundSquare.scale, 0, 2.5f, 0.5f, 0.01f, (short)0, this);
+		addFixture(new ConeFixture3D(body, 1, 0.25f, 0.25f, 30f*SCALE, 30f*SCALE, 20 * SCALE, 0, 2.5f, 0.5f, 0.01f, (short)0, this));
 	}
 
 }

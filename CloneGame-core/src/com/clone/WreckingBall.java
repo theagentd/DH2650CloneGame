@@ -34,7 +34,7 @@ public class WreckingBall{
 		/*TODO can't see if this worked, need the camera view to be wider, also the wrecking balls seem to disappear...
 		 * Also, we need to be able to set a velocity on it?
 		 */
-		new SphereFixture3D(body, 8, 0, 0.1f, 0.4f, 1f, (short)0, this);
+		new SphereFixture3D(body, 1, 0.25f, 0.25f, 8, 0, 0.1f, 0.4f, 1f, (short)0, this);
 		
 	}
 }
