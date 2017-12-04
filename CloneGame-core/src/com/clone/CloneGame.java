@@ -177,7 +177,9 @@ public class CloneGame extends ApplicationAdapter {
 			modelBatch.end();
 		}
 
-		debugRenderer.render(world, matrix);
+		if(Gdx.input.isKeyPressed(Input.Keys.R)){
+			debugRenderer.render(world, matrix);
+		}
 	}
 
 	@Override
