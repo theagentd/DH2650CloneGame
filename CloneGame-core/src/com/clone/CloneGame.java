@@ -33,6 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.google.gwt.user.client.ui.Widget;
 import com.clone.fixture3d.Fixture3D;
 
@@ -104,7 +105,6 @@ public class CloneGame extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(stage);
 		table = createTable();
 		stage.addActor(table);
-
 	}
 
 	private Table createTable() {
@@ -269,6 +269,11 @@ public class CloneGame extends ApplicationAdapter {
 		if(Gdx.input.isKeyPressed(Input.Keys.R)){
 			debugRenderer.render(world, matrix);
 		}
+		Viewport v = stage.getViewport();
+		if(v.getScreenWidth() != (int)camera.viewportWidth || v.getScreenHeight() != (int)camera.viewportHeight){
+			v.setScreenSize((int)camera.viewportWidth, (int)camera.viewportHeight);
+		}
+		
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
 	}
