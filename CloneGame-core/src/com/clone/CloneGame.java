@@ -100,7 +100,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		kindOfClone = NORMALCLONE;
 
-		currentLevel = new Level3(world);
+		currentLevel = new Level1(world);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		table = createTable();
@@ -250,21 +250,10 @@ public class CloneGame extends ApplicationAdapter {
 			player = null;
 			contactListener.endLevel = false;
 		}
-
-		// Gdx.graphics.setTitle("Can jump: " + player.isCanJump());
 		
-		if(player.isActive) {
-			/*Vector2 playerPos = player.ragdoll.torsoBody.getPosition();
-			camera.position.set(playerPos.x + 0, playerPos.y, 50);
-			camera.lookAt(playerPos.x, playerPos.y, 0);
-			camera.near = 1;
-			camera.far = 100;
-			camera.update();*/
-			
-			modelBatch.begin(camera);
-			Fixture3D.renderAllFixtures(modelBatch, environment);
-			modelBatch.end();
-		}
+		modelBatch.begin(camera);
+		Fixture3D.renderAllFixtures(modelBatch, environment);
+		modelBatch.end();
 
 		if(Gdx.input.isKeyPressed(Input.Keys.R)){
 			debugRenderer.render(world, matrix);
