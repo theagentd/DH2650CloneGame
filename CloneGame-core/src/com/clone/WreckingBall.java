@@ -3,6 +3,7 @@ package com.clone;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.clone.fixture3d.SphereFixture3D;
 
 public class WreckingBall{
 	public Body body;
@@ -29,7 +30,13 @@ public class WreckingBall{
 		body = world.createBody(bodyDef);
 		body.createFixture(fixtureDef).setUserData(this);
 		
-		circle.dispose();		   
+		circle.dispose();
+		
+		/*TODO can't see if this worked, need the camera view to be wider, also the wrecking balls seem to disappear...
+		 * Also, we need to be able to set a velocity on it?
+		 */
+		new SphereFixture3D(body, 1, 0.25f, 0.25f, 8, 0, 0.1f, 0.4f, 1f, (short)0, this);
+		
 	}
 	
 	public void destroy() {

@@ -30,29 +30,29 @@ public class BouncingPlayer extends Player{
 	}
 /*
 	public void applyForce2(float x, float y){
-		super.ragdoll.body.applyLinearImpulse(x, y, 0, 0, true);
+		super.ragdoll.torsoBody.applyLinearImpulse(x, y, 0, 0, true);
 	}
 	
 	public void applyForce(float force) {
-		Vector2 oldVelocity = ragdoll.body.getLinearVelocity();
-		ragdoll.body.setLinearVelocity(force, oldVelocity.y);
+		Vector2 oldVelocity = ragdoll.torsoBody.getLinearVelocity();
+		ragdoll.torsoBody.setLinearVelocity(force, oldVelocity.y);
 	}
 	
 	public void jump(float velocity){
 		if(canJump) {
-			Vector2 oldVelocity = ragdoll.body.getLinearVelocity();
-			ragdoll.body.setLinearVelocity(oldVelocity.x, velocity);
-			System.out.println(ragdoll.body.getLinearVelocity());
+			Vector2 oldVelocity = ragdoll.torsoBody.getLinearVelocity();
+			ragdoll.torsoBody.setLinearVelocity(oldVelocity.x, velocity);
+			System.out.println(ragdoll.torsoBody.getLinearVelocity());
 		}
 	}
 	*/
 	@Override
 	public void dispose() {
 		setActive(false);
-		ragdoll.body.destroyFixture(rectHitbox);
-		ragdoll.body.destroyFixture(circleHitbox);
-		ragdoll.body.setFixedRotation(false);
-		new BouncingBlock(world, new Vector2(ragdoll.body.getPosition().x, ragdoll.body.getPosition().y -4.5f));
+		ragdoll.torsoBody.destroyFixture(rectHitbox);
+		ragdoll.torsoBody.destroyFixture(circleHitbox);
+		ragdoll.torsoBody.setFixedRotation(false);
+		new BouncingBlock(world, new Vector2(ragdoll.torsoBody.getPosition().x, ragdoll.torsoBody.getPosition().y -4.5f));
 	}
 	/*
 	public void setJump(boolean newJump) {

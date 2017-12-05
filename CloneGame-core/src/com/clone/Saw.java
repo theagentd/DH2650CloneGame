@@ -1,5 +1,7 @@
 package com.clone;
 
+import static com.clone.LevelsElement.*;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -23,10 +25,10 @@ public class Saw {
 
 	// Shape
 	Vector2[] vertices = new Vector2[4];
-	vertices[0] = new Vector2(100 * GroundSquare.scale, 0);
-	vertices[1] = new Vector2(-100 * GroundSquare.scale, 0);
-	vertices[2] = new Vector2(0, 100* GroundSquare.scale);
-	vertices[3] = new Vector2(0, - 100 * GroundSquare.scale);
+	vertices[0] = new Vector2(100 * SCALE, 0);
+	vertices[1] = new Vector2(-100 * SCALE, 0);
+	vertices[2] = new Vector2(0, 100* SCALE);
+	vertices[3] = new Vector2(0, - 100 * SCALE);
 	PolygonShape shape = new PolygonShape();
 	shape.set(vertices);
 	
@@ -38,10 +40,10 @@ public class Saw {
 	fixtureDef.restitution = 0.3f;
 
 	Vector2[] vertices2 = new Vector2[4];
-	vertices2[0] = new Vector2(75 * GroundSquare.scale, 75 * GroundSquare.scale);
-	vertices2[1] = new Vector2(-75 * GroundSquare.scale, -75 * GroundSquare.scale);
-	vertices2[2] = new Vector2(-75 * GroundSquare.scale, 75* GroundSquare.scale);
-	vertices2[3] = new Vector2(75 * GroundSquare.scale, - 75 * GroundSquare.scale);
+	vertices2[0] = new Vector2(75 * SCALE, 75 * SCALE);
+	vertices2[1] = new Vector2(-75 * SCALE, -75 * SCALE);
+	vertices2[2] = new Vector2(-75 * SCALE, 75* SCALE);
+	vertices2[3] = new Vector2(75 * SCALE, - 75 * SCALE);
 	
 	PolygonShape shape2 = new PolygonShape();
 	shape2.set(vertices2);

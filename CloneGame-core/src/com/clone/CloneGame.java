@@ -5,10 +5,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -22,8 +34,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.google.gwt.user.client.ui.Widget;
+import com.clone.fixture3d.Fixture3D;
 
 public class CloneGame extends ApplicationAdapter {
+	
+	private float cameraX, cameraY;
+	private PerspectiveCamera camera;
+	
+	private ModelBatch modelBatch;
+	private Environment environment;
+	
+	
+	
 
 	private World world;
 	private Box2DDebugRenderer debugRenderer;
@@ -51,6 +73,24 @@ public class CloneGame extends ApplicationAdapter {
 
 	@Override
 	public void create() {
+
+
+		cameraX = 45+240/2;
+		cameraY = 120 + 135/2;
+		
+		camera = new PerspectiveCamera(60, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.near = 10;
+		camera.far = 1000;
+		camera.position.set(cameraX, cameraY, 117);
+		camera.lookAt(cameraX, cameraY, 0);
+		
+		
+		modelBatch = new ModelBatch();
+		
+		environment = new Environment();
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+		environment.add(new DirectionalLight().set(0.5f, 0.5f, 0.5f, -1, -2, -3));
+		
 		world = new World(new Vector2(0, 0), true);
 		world.setGravity(new Vector2(0, -9.81f * 2));
 
@@ -111,12 +151,16 @@ public class CloneGame extends ApplicationAdapter {
 		return table;
 	}
 
-	private long previousTime = System.nanoTime();
-
 	@Override
 	public void render() {
+		
+		
+		camera.viewportWidth = Gdx.graphics.getWidth();
+		camera.viewportHeight = Gdx.graphics.getHeight();
+		camera.update();
+		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		if ((noChosenPlayer && player == null) || ((noChosenPlayer && !player.getActive()))) {
 			table.setVisible(true);
 		}
@@ -151,7 +195,7 @@ public class CloneGame extends ApplicationAdapter {
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 			player.dispose();
-			r.body.applyAngularImpulse((float) (Math.random() * 2 - 1) * 50, true);
+			r.torsoBody.applyAngularImpulse((float) (Math.random() * 2 - 1) * 50, true);
 		}
 
 		// if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
@@ -160,9 +204,11 @@ public class CloneGame extends ApplicationAdapter {
 		// if(r.body != null) r.body.applyForceToCenter(-force, 0, true);
 		// if(r.head != null) r.head.applyForceToCenter(+force, 0, true);
 		// }
-		float cameraScale = 15f;
 		Matrix4 matrix = new Matrix4();
-		matrix.setToOrtho2D(45, 120, 16 * cameraScale, 9 * cameraScale, -1, +1);
+		float aspect = (float)camera.viewportWidth / camera.viewportHeight;
+		float w = aspect*135;
+		float h = 135;
+		matrix.setToOrtho2D(cameraX-w/2, cameraY - h/2, aspect*135, 135, -1, +1);
 
 		// long time = System.nanoTime();
 		// float delta = (time - previousTime) / 1000000000f;
@@ -206,9 +252,25 @@ public class CloneGame extends ApplicationAdapter {
 		}
 
 		// Gdx.graphics.setTitle("Can jump: " + player.isCanJump());
+		
+		if(player.isActive) {
+			/*Vector2 playerPos = player.ragdoll.torsoBody.getPosition();
+			camera.position.set(playerPos.x + 0, playerPos.y, 50);
+			camera.lookAt(playerPos.x, playerPos.y, 0);
+			camera.near = 1;
+			camera.far = 100;
+			camera.update();*/
+			
+			modelBatch.begin(camera);
+			Fixture3D.renderAllFixtures(modelBatch, environment);
+			modelBatch.end();
+		}
+
+		if(Gdx.input.isKeyPressed(Input.Keys.R)){
+			debugRenderer.render(world, matrix);
+		}
 		stage.act(Gdx.graphics.getDeltaTime());
 		stage.draw();
-		debugRenderer.render(world, matrix);
 	}
 
 	@Override
@@ -231,7 +293,7 @@ public class CloneGame extends ApplicationAdapter {
 			}
 		}
 
-		Vector2 v = r.body.getLinearVelocity();
+		Vector2 v = r.torsoBody.getLinearVelocity();
 		float maxSpeed = 20;
 		if (v.x < -maxSpeed) {
 			v.x = -maxSpeed;
@@ -243,7 +305,7 @@ public class CloneGame extends ApplicationAdapter {
 		if (moving != 0 || (moving < 0 && v.x > 0) || (moving > 0 && v.x < 0)) {
 			v.x *= 0.9f;
 		}
-		r.body.setLinearVelocity(v);
+		r.torsoBody.setLinearVelocity(v);
 
 	}
 }

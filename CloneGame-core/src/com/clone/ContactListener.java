@@ -129,7 +129,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 							Vector2 spawn = ((WreckingBall) objectA).spawn;
 							World world = ((WreckingBall) objectA).world;
 							if (objectB instanceof BouncingBlock) {
-								((BouncingBlock) objectB).destroy();
+								((BouncingBlock) objectB).dispose();
 							}
 							((WreckingBall) objectA).destroy();
 							new WreckingBall(world, spawn);
@@ -157,7 +157,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 							Vector2 spawn = ((WreckingBall) objectB).spawn;
 							World world = ((WreckingBall) objectB).world;
 							if (objectA instanceof BouncingBlock) {
-								((BouncingBlock) objectA).destroy();
+								((BouncingBlock) objectA).dispose();
 							}
 							((WreckingBall) objectB).destroy();
 							new WreckingBall(world, spawn);
@@ -222,22 +222,20 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	private void checkBreak(final Object objectA, final Object objectB) {
 		if (isPlayer(objectA, objectB)) {
-			if (objectA instanceof Breackable) {
+			if (objectA instanceof Breakable) {
 				Gdx.app.postRunnable(new Runnable() {
 
 					@Override
 					public void run() {
-						((Breackable) objectA).destroy();
-
+						((Breakable) objectA).dispose();
 					}
 				});
-			} else if (objectB instanceof Breackable) {
+			} else if (objectB instanceof Breakable) {
 				Gdx.app.postRunnable(new Runnable() {
 
 					@Override
 					public void run() {
-						((Breackable) objectB).destroy();
-
+						((Breakable) objectB).dispose();
 					}
 				});
 			}
