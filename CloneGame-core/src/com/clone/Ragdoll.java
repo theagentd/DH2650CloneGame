@@ -43,10 +43,7 @@ public class Ragdoll {
 	public final Fixture3D leftLowerLegFixture, rightLowerLegFixture;
 	
 	
-	
-	
-	
-	
+	private boolean jointsDisposed;
 	public final RevoluteJoint neckJoint;
 	
 	public final RevoluteJoint leftShoulderJoint, rightShoulderJoint;	
@@ -103,6 +100,8 @@ public class Ragdoll {
 		rightLowerLegFixture = new BoxFixture3D(rightLowerLegBody, r, g, b, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
 
 		
+		
+		jointsDisposed = false;
 		neckJoint = createRevoluteJoint(world, headBody, 0, -1.7f, torsoBody, 0, +2, 0.3f);
 
 		leftShoulderJoint = createRevoluteJoint(world, torsoBody, 0, +2, leftArmBody, 0, 1.2f, 0f);
@@ -155,17 +154,20 @@ public class Ragdoll {
 	}
 	
 	public void dispose(World world) {
-		world.destroyJoint(neckJoint);
-
-		world.destroyJoint(leftShoulderJoint);
-		world.destroyJoint(rightShoulderJoint);
-		world.destroyJoint(leftElbowJoint);
-		world.destroyJoint(rightElbowJoint);
-
-		world.destroyJoint(leftHipJoint);
-		world.destroyJoint(rightHipJoint);
-		world.destroyJoint(leftKneeJoint);
-		world.destroyJoint(rightKneeJoint);
+		if(!jointsDisposed){
+			world.destroyJoint(neckJoint);
+	
+			world.destroyJoint(leftShoulderJoint);
+			world.destroyJoint(rightShoulderJoint);
+			world.destroyJoint(leftElbowJoint);
+			world.destroyJoint(rightElbowJoint);
+	
+			world.destroyJoint(leftHipJoint);
+			world.destroyJoint(rightHipJoint);
+			world.destroyJoint(leftKneeJoint);
+			world.destroyJoint(rightKneeJoint);
+			jointsDisposed = true;
+		}
 		
 		
 		headFixture.dispose();
@@ -201,17 +203,20 @@ public class Ragdoll {
 	}
 	
 	public void splash(World world) {
-		world.destroyJoint(neckJoint);
-
-		world.destroyJoint(leftShoulderJoint);
-		world.destroyJoint(rightShoulderJoint);
-		world.destroyJoint(leftElbowJoint);
-		world.destroyJoint(rightElbowJoint);
-
-		world.destroyJoint(leftHipJoint);
-		world.destroyJoint(rightHipJoint);
-		world.destroyJoint(leftKneeJoint);
-		world.destroyJoint(rightKneeJoint);
+		if(!jointsDisposed){
+			world.destroyJoint(neckJoint);
+	
+			world.destroyJoint(leftShoulderJoint);
+			world.destroyJoint(rightShoulderJoint);
+			world.destroyJoint(leftElbowJoint);
+			world.destroyJoint(rightElbowJoint);
+	
+			world.destroyJoint(leftHipJoint);
+			world.destroyJoint(rightHipJoint);
+			world.destroyJoint(leftKneeJoint);
+			world.destroyJoint(rightKneeJoint);
+			jointsDisposed = true;
+		}
 	}
 	
 }
