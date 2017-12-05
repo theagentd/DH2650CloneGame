@@ -20,6 +20,7 @@ public class WreckingBall{
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyType.DynamicBody;
 		bodyDef.position.set(position);
+		bodyDef.gravityScale = 0.25f;
 		body = world.createBody(bodyDef);
 		
 		fixture = new SphereFixture3D(body, 1, 0.25f, 0.25f, 8, 0, 0.1f, 0.4f, 0.5f, (short)0, this);
