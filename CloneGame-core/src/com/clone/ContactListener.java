@@ -35,7 +35,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		checkPlayerHit(objectA, objectB);
 		checkEnd(objectA, objectB);
 		// wreckingBallSwitchDirection(objectA, objectB);
-		checkBreak(objectA, objectB);
+		//checkBreak(objectA, objectB);
 	}
 
 	@Override
@@ -220,6 +220,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		}
 	}
 
+	/*
 	private void checkBreak(final Object objectA, final Object objectB) {
 		if (isPlayer(objectA, objectB)) {
 			if (objectA instanceof Breakable) {
@@ -241,6 +242,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 			}
 		}
 	}
+	*/
 
 	private boolean isEnd(Object objectA, Object objectB) {
 		return objectA instanceof End || objectB instanceof End;
