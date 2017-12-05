@@ -55,7 +55,6 @@ public class BoxFixture3D extends Fixture3D{
 		fd.density = density;
 		fd.friction = friction;
 		fd.restitution = restitution;
-		fd.friction = 0.0f;
 		fd.filter.groupIndex = groupIndex;
 		
 		Fixture fixture = body.createFixture(fd);

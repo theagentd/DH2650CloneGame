@@ -102,7 +102,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		kindOfClone = NORMALCLONE;
 
-		currentLevel = new Level1(world);
+		currentLevel = new Level2(world);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		table = createTable();
@@ -207,7 +207,7 @@ public class CloneGame extends ApplicationAdapter {
 		if (player != null) {
 			move(player);
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && player.isActive) {
 			player.dispose();
 			r.torsoBody.applyAngularImpulse((float) (Math.random() * 2 - 1) * 50, true);
 		}
