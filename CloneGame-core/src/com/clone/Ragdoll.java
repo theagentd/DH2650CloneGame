@@ -198,8 +198,6 @@ public class Ragdoll {
 		world.destroyBody(rightUpperLegBody);
 		world.destroyBody(leftLowerLegBody);
 		world.destroyBody(rightLowerLegBody);
-		
-		
 	}
 	
 	public void splash(World world) {

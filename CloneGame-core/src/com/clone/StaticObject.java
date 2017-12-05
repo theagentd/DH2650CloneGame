@@ -38,11 +38,17 @@ public abstract class StaticObject {
 	
 	public void dispose(){
 		
-		for(Fixture3D f : fixtures){
-			f.dispose();
+		if(fixtures != null){
+			for(Fixture3D f : fixtures){
+				f.dispose();
+			}
+			
+			world.destroyBody(body);
 		}
 		
-		world.destroyBody(body);
+		fixtures = null;
+		
+		body = null;
 		
 	}
 }
