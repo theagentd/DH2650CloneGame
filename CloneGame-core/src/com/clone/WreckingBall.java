@@ -27,8 +27,10 @@ public class WreckingBall{
 	}
 	
 	public void destroy() {
-		fixture.dispose();
-		world.destroyBody(body);
+		if(fixture != null){
+			fixture.dispose();
+			world.destroyBody(body);
+		}
 		
 		fixture = null;
 		body = null;
