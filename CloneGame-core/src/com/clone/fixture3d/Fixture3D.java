@@ -35,6 +35,13 @@ public abstract class Fixture3D {
 		}
 	}
 	
+	public static void destroyAllFixtures(){
+		for(int i = 0; i < fixtures.size(); i++){
+			fixtures.get(i).dispose();
+		}
+		fixtures.clear();
+	}
+	
 	public Fixture getFixture() {
 		return fixture;
 	}

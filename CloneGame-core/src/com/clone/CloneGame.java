@@ -23,6 +23,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -232,21 +233,29 @@ public class CloneGame extends ApplicationAdapter {
 		}
 
 		if (contactListener.endLevel) {
+			Array<Joint> joints = new Array<Joint>();
+			world.getJoints(joints);
+			for (Joint joint : joints) {
+				world.destroyJoint(joint);
+			}
+			
+			Fixture3D.destroyAllFixtures();
+			
 			Array<Body> bodies = new Array<Body>();
 			world.getBodies(bodies);
 			for (Body body : bodies) {
 				world.destroyBody(body);
 			}
+			
 			if (currentLevel instanceof Level1) {
 				currentLevel = new Level2(world);
 			} else if (currentLevel instanceof Level2) {
 				currentLevel = new Level3(world);
 			} else if (currentLevel instanceof Level3) {
 				currentLevel = new Level4(world);
-			}
-			 else if (currentLevel instanceof Level4) {
+			} else if (currentLevel instanceof Level4) {
 			 currentLevel = new Level1(world);
-			 }
+			}
 			player = null;
 			contactListener.endLevel = false;
 		}
