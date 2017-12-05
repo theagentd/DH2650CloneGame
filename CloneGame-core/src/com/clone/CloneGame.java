@@ -68,6 +68,7 @@ public class CloneGame extends ApplicationAdapter {
 	private final static int NORMALCLONE = 0;
 	private final static int BOUNCINGCLONE = 1;
 	private final static int FREEZINGCLONE = 2;
+	private final static int EXPLODINGCLONE = 3;
 
 	private boolean noChosenPlayer = false;
 
@@ -117,6 +118,7 @@ public class CloneGame extends ApplicationAdapter {
 		TextButton normal = new TextButton("Normal Clone", skin);
 		TextButton bouncing = new TextButton("Bouncing Clone", skin);
 		TextButton freezing = new TextButton("Freezing Clone", skin);
+		TextButton exploding = new TextButton("Exploding Clone", skin);
 		normal.addCaptureListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -141,11 +143,20 @@ public class CloneGame extends ApplicationAdapter {
 				table.setVisible(false);
 			};
 		});
+		exploding.addCaptureListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				kindOfClone = EXPLODINGCLONE;
+				noChosenPlayer = false;
+				table.setVisible(false);
+			};
+		});
 		table.add("Which clone do you want ?", "default-font", Color.CHARTREUSE).row();
 		table.add(" ").row();
 		table.add(normal).size(BUTTONWIDTH, BUTTONHEIGHT).row();
 		table.add(bouncing).size(BUTTONWIDTH, BUTTONHEIGHT).row();
 		table.add(freezing).size(BUTTONWIDTH, BUTTONHEIGHT).row();
+		table.add(exploding).size(BUTTONWIDTH, BUTTONHEIGHT).row();
 
 		// table.setDebug(true); // This is optional, but enables debug lines for
 		// tables.
@@ -186,8 +197,10 @@ public class CloneGame extends ApplicationAdapter {
 			case FREEZINGCLONE:
 				player = new FreezingPlayer(r);
 				break;
+			case EXPLODINGCLONE:
+				player = new ExplodingPlayer(r, world);
+				break;
 			}
-			
 		}
 
 		// float force = 0;
