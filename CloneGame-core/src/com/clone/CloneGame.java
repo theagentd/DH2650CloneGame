@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector2;
@@ -45,6 +46,8 @@ public class CloneGame extends ApplicationAdapter {
 	
 	private ModelBatch modelBatch;
 	private Environment environment;
+	
+	private ShapeRenderer gradientRenderer;
 	
 	
 	
@@ -93,6 +96,12 @@ public class CloneGame extends ApplicationAdapter {
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.5f, 0.5f, 0.5f, -1, -2, -3));
+		
+		gradientRenderer = new ShapeRenderer();
+		gradientRenderer.setAutoShapeType(true);
+		gradientRenderer.setTransformMatrix(new Matrix4());
+		gradientRenderer.setProjectionMatrix(new Matrix4());
+		
 		
 		world = new World(new Vector2(0, 0), true);
 		world.setGravity(new Vector2(0, -9.81f * 2));
@@ -189,6 +198,15 @@ public class CloneGame extends ApplicationAdapter {
 		
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+		Color topColor = new Color(0.3f, 0.3f, 0.6f, 1);
+		Color botColor = new Color(1f, 0.6f, 0.4f, 1);
+		gradientRenderer.begin();
+		gradientRenderer.set(ShapeRenderer.ShapeType.Filled);
+		gradientRenderer.rect(-1, -1, 2, 2, topColor, topColor, botColor, botColor);
+		gradientRenderer.end();
+		
+		
 		if ((noChosenPlayer && player == null) || ((noChosenPlayer && !player.getActive()))) {
 			table.setVisible(true);
 		}
