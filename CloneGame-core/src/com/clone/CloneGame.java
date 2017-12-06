@@ -102,7 +102,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		kindOfClone = NORMALCLONE;
 
-		currentLevel = new Level4(world);
+		currentLevel = new Level1(world);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		table = createTable();
@@ -116,9 +116,48 @@ public class CloneGame extends ApplicationAdapter {
 		Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		table.setSkin(skin);
 		TextButton normal = new TextButton("Normal Clone", skin);
-		TextButton bouncing = new TextButton("Bouncing Clone", skin);
-		TextButton freezing = new TextButton("Freezing Clone", skin);
-		TextButton exploding = new TextButton("Exploding Clone", skin);
+		
+		table.add("Which clone do you want ?", "default-font", Color.CHARTREUSE).row();
+		table.add(" ").row();
+		table.add(normal).size(BUTTONWIDTH, BUTTONHEIGHT).row();
+		if (currentLevel instanceof Level2 || currentLevel instanceof Level3 || currentLevel instanceof Level4) {
+			TextButton bouncing = new TextButton("Bouncing Clone", skin);
+			bouncing.addCaptureListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					kindOfClone = BOUNCINGCLONE;
+					noChosenPlayer = false;
+					table.setVisible(false);
+				};
+			});
+			table.add(bouncing).size(BUTTONWIDTH, BUTTONHEIGHT).row();
+		}
+		if (currentLevel instanceof Level3 || currentLevel instanceof Level4) {
+			TextButton exploding = new TextButton("Exploding Clone", skin);
+			exploding.addCaptureListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					kindOfClone = EXPLODINGCLONE;
+					noChosenPlayer = false;
+					table.setVisible(false);
+				};
+			});
+			table.add(exploding).size(BUTTONWIDTH, BUTTONHEIGHT).row();
+		}
+		if (currentLevel instanceof Level4) {
+			TextButton freezing = new TextButton("Freezing Clone", skin);
+			freezing.addCaptureListener(new ClickListener() {
+				@Override
+				public void clicked(InputEvent event, float x, float y) {
+					kindOfClone = FREEZINGCLONE;
+					noChosenPlayer = false;
+					table.setVisible(false);
+				};
+			});
+			table.add(freezing).size(BUTTONWIDTH, BUTTONHEIGHT).row();
+			
+		}
+		
 		normal.addCaptureListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
@@ -127,36 +166,13 @@ public class CloneGame extends ApplicationAdapter {
 				table.setVisible(false);
 			};
 		});
-		bouncing.addCaptureListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				kindOfClone = BOUNCINGCLONE;
-				noChosenPlayer = false;
-				table.setVisible(false);
-			};
-		});
-		freezing.addCaptureListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				kindOfClone = FREEZINGCLONE;
-				noChosenPlayer = false;
-				table.setVisible(false);
-			};
-		});
-		exploding.addCaptureListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-				kindOfClone = EXPLODINGCLONE;
-				noChosenPlayer = false;
-				table.setVisible(false);
-			};
-		});
-		table.add("Which clone do you want ?", "default-font", Color.CHARTREUSE).row();
-		table.add(" ").row();
-		table.add(normal).size(BUTTONWIDTH, BUTTONHEIGHT).row();
-		table.add(bouncing).size(BUTTONWIDTH, BUTTONHEIGHT).row();
-		table.add(freezing).size(BUTTONWIDTH, BUTTONHEIGHT).row();
-		table.add(exploding).size(BUTTONWIDTH, BUTTONHEIGHT).row();
+		
+		
+		
+		
+		
+		
+		
 
 		// table.setDebug(true); // This is optional, but enables debug lines for
 		// tables.
@@ -271,6 +287,10 @@ public class CloneGame extends ApplicationAdapter {
 			}
 			player = null;
 			contactListener.endLevel = false;
+			table.clear();
+			table = createTable();
+			stage.addActor(table);
+			
 		}
 		
 		//Restarts the current level
