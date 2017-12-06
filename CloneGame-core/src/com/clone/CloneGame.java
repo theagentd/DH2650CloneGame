@@ -102,7 +102,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		kindOfClone = NORMALCLONE;
 
-		currentLevel = new Level1(world);
+		currentLevel = new Level4(world);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		table = createTable();

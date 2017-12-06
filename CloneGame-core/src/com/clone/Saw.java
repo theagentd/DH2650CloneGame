@@ -2,6 +2,7 @@ package com.clone;
 
 import static com.clone.LevelsElement.*;
 
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,59 +11,38 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.clone.fixture3d.BoxFixture3D;
 
 public class Saw {
-	public Body body;
+	
 	public World world;
+	public Body body;
 	public Vector2 spawn;
+	private BoxFixture3D blade1, blade2;
 
 	public Saw(World world, Vector2... points){
-	this.world = world;
-	spawn = points[0];
-	BodyDef bodyDef = new BodyDef();
-	bodyDef.type = BodyType.KinematicBody;
-	bodyDef.position.set(points[0]);
+		this.world = world;
+		spawn = points[0];
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyType.KinematicBody;
+		bodyDef.position.set(points[0]);
+		body = world.createBody(bodyDef);
+		body.setAngularVelocity(10f);
 
-	// Shape
-	Vector2[] vertices = new Vector2[4];
-	vertices[0] = new Vector2(100 * SCALE, 0);
-	vertices[1] = new Vector2(-100 * SCALE, 0);
-	vertices[2] = new Vector2(0, 100* SCALE);
-	vertices[3] = new Vector2(0, - 100 * SCALE);
-	PolygonShape shape = new PolygonShape();
-	shape.set(vertices);
+		blade1 = new BoxFixture3D(body, 1, 0.2f, 0.2f, 100*SCALE, 100*SCALE, 0.01f, 0, 0.1f, 0.4f, 0.3f, (short)0, this);
+		blade2 = new BoxFixture3D(body, 1, 0.2f, 0.2f, 100*SCALE, 100*SCALE, 0.01f, 0, 0.1f, 0.4f, 0.3f, (short)0, this, new Matrix4().rotate(0, 0, 1, 45));
+	}
 	
-	// Create a fixture definition to apply our shape to
-	FixtureDef fixtureDef = new FixtureDef();
-	fixtureDef.shape = shape;
-	fixtureDef.density = 0.1f;
-	fixtureDef.friction = 0.4f;
-	fixtureDef.restitution = 0.3f;
-
-	Vector2[] vertices2 = new Vector2[4];
-	vertices2[0] = new Vector2(75 * SCALE, 75 * SCALE);
-	vertices2[1] = new Vector2(-75 * SCALE, -75 * SCALE);
-	vertices2[2] = new Vector2(-75 * SCALE, 75* SCALE);
-	vertices2[3] = new Vector2(75 * SCALE, - 75 * SCALE);
-	
-	PolygonShape shape2 = new PolygonShape();
-	shape2.set(vertices2);
-	
-	FixtureDef f2 = new FixtureDef();
-	f2.shape = shape2;
-	f2.density = 0.1f;
-	f2.friction = 0.4f;
-	f2.restitution = 0.3f;
-	
-	body = world.createBody(bodyDef);
-	body.createFixture(fixtureDef).setUserData(this);
-	body.createFixture(f2).setUserData(this);
-	body.setAngularVelocity(10f);
-	shape.dispose();
-	shape2.dispose();
-}
-
-public void destroy() {
-		world.destroyBody(body);
+	public void destroy() {
+		
+		if(blade1 != null){
+			blade1.dispose();
+			blade2.dispose();
+			world.destroyBody(body);
+		}
+		
+		blade1 = null;
+		blade2 = null;
+		body = null;
 	}
 }

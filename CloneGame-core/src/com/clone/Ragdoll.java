@@ -80,7 +80,7 @@ public class Ragdoll {
 		headFixture = new SphereFixture3D(headBody, r, g, b, 1.5f, 0, nonTorsoDensity, friction, restitution, groupIndex, this);
 
 		leftArmBody = createBody(world, x, y+0.5f, nonTorsoDamping);
-		rightArmBody = createBody(world, x, y+0.5f, nonTorsoDamping);
+		rightArmBody = createBody(world, x, y+0.5f, nonTorsoDamping*0.95f);
 		leftArmFixture = new BoxFixture3D(leftArmBody, r, g, b, 0.3f, 1.2f, 0.3f, -1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
 		rightArmFixture = new BoxFixture3D(rightArmBody, r, g, b, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
 
@@ -89,7 +89,7 @@ public class Ragdoll {
 		leftForeArmFixture = new BoxFixture3D(leftForeArmBody, r, g, b, 0.3f, 1.2f, 0.3f, -1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
 		rightForeArmFixture = new BoxFixture3D(rightForeArmBody, r, g, b, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
 		
-		leftUpperLegBody = createBody(world, x, y-3.2f, nonTorsoDamping);
+		leftUpperLegBody = createBody(world, x, y-3.2f, nonTorsoDamping*0.95f);
 		rightUpperLegBody = createBody(world, x, y-3.2f, nonTorsoDamping);
 		leftUpperLegFixture = new BoxFixture3D(leftUpperLegBody, r, g, b, 0.3f, 1.2f, 0.3f, -1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);
 		rightUpperLegFixture = new BoxFixture3D(rightUpperLegBody, r, g, b, 0.3f, 1.2f, 0.3f, +1.1f, nonTorsoDensity, friction, restitution, groupIndex, this);

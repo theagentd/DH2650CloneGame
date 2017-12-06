@@ -5,22 +5,21 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public abstract class Fixture3D {
 	
-	private static ArrayList<Fixture3D> fixtures = new ArrayList<Fixture3D>();
-	
+	private static final ArrayList<Fixture3D> fixtures = new ArrayList<Fixture3D>();
 	
 	protected Body body;
 	protected Fixture fixture;
 	
 	protected ModelInstance instance;
 	
-	public Fixture3D(Fixture fixture, ModelInstance instance) {
-		
+	public Fixture3D(Fixture fixture, ModelInstance instance) {	
 		this.body = fixture.getBody();
 		this.fixture = fixture;
 		
