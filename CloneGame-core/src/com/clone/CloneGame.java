@@ -111,7 +111,7 @@ public class CloneGame extends ApplicationAdapter {
 
 		kindOfClone = NORMALCLONE;
 
-		currentLevel = new Level1(world);
+		currentLevel = new Level4(world);
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 		table = createTable();
@@ -199,8 +199,8 @@ public class CloneGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		Color topColor = new Color(0.3f, 0.3f, 0.6f, 1);
-		Color botColor = new Color(1f, 0.6f, 0.4f, 1);
+		Color topColor = new Color(230/255f, 98/255f, 156/255f, 1);
+		Color botColor = new Color(232/255f, 166/255f, 30/255f, 1);
 		gradientRenderer.begin();
 		gradientRenderer.set(ShapeRenderer.ShapeType.Filled);
 		gradientRenderer.rect(-1, -1, 2, 2, topColor, topColor, botColor, botColor);
